@@ -102,6 +102,7 @@ import { computed } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import type { CreateCompletionResponseChoicesInner } from 'openai'
 import { useGlobalToast } from '@/toast'
+import { copyToClipboard } from '@/utils'
 
 const globalToast = useGlobalToast()
 
@@ -117,9 +118,9 @@ const choices = computed(() => {
   })
 })
 
-const { copy } = useClipboard()
 const handleCopy = async (choice: CreateCompletionResponseChoicesInner) => {
-  await copy(choice.text || '')
+  // await copy(choice.text || '')
+  copyToClipboard(choice.text || '')
   globalToast.success('Copied')
 }
 const emit = defineEmits(['remove', 'rewrite'])
