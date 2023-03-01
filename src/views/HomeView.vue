@@ -4,7 +4,29 @@
       <div class="fixed inset-0 bg-black/30" />
       <div class="fixed inset-0 flex items-center justify-center">
         <DialogPanel ref="target" class="mx-48 w-full rounded">
-          <div class="max-h-screen overflow-auto py-12">
+          <div class="relative max-h-screen overflow-auto py-12">
+            <div class="absolute right-4 top-16 flex">
+              <example-switch />
+              <button class="btn-ghost btn">
+                <svg
+                  t="1677590028203"
+                  class="cursor-pointer"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="5303"
+                  width="20"
+                  height="20"
+                  @click="isOpen = false"
+                >
+                  <path
+                    d="M556.8 512L832 236.8c12.8-12.8 12.8-32 0-44.8-12.8-12.8-32-12.8-44.8 0L512 467.2l-275.2-277.333333c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l275.2 277.333333-277.333333 275.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.933333 8.533333 23.466666 8.533333s17.066667-2.133333 23.466667-8.533333L512 556.8 787.2 832c6.4 6.4 14.933333 8.533333 23.466667 8.533333s17.066667-2.133333 23.466666-8.533333c12.8-12.8 12.8-32 0-44.8L556.8 512z"
+                    fill="#666666"
+                    p-id="5304"
+                  ></path>
+                </svg>
+              </button>
+            </div>
             <div class="bg-white p-8">
               <template v-if="list.length">
                 <div class="mb-4 border-b pb-4">
@@ -96,56 +118,7 @@
           <div class="prose">
             <h3 class="prose-h3">Examples</h3>
           </div>
-          <button class="btn-ghost btn" @click="toggleExampleType">
-            <svg
-              v-if="!isList"
-              t="1677589638615"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="3285"
-              width="20"
-              height="20"
-            >
-              <path
-                d="M179.712 501.28896l264.47872 0c11.32544 0 20.48-9.15456 20.48-20.48L464.67072 216.33024c0-11.32544-9.15456-20.48-20.48-20.48L179.712 195.85024c-11.32544 0-20.48 9.15456-20.48 20.48l0 264.47872C159.232 492.11392 168.40704 501.28896 179.712 501.28896zM200.192 236.81024l223.51872 0 0 223.51872L200.192 460.32896 200.192 236.81024z"
-                p-id="3286"
-              ></path>
-              <path
-                d="M529.63328 501.28896l264.47872 0c11.32544 0 20.48-9.15456 20.48-20.48L814.592 216.33024c0-11.32544-9.15456-20.48-20.48-20.48L529.63328 195.85024c-11.32544 0-20.48 9.15456-20.48 20.48l0 264.47872C509.15328 492.11392 518.32832 501.28896 529.63328 501.28896zM550.11328 236.81024l223.51872 0 0 223.51872L550.11328 460.32896 550.11328 236.81024z"
-                p-id="3287"
-              ></path>
-              <path
-                d="M179.712 851.21024l264.47872 0c11.32544 0 20.48-9.15456 20.48-20.48L464.67072 566.23104c0-11.32544-9.15456-20.48-20.48-20.48L179.712 545.75104c-11.32544 0-20.48 9.15456-20.48 20.48l0 264.47872C159.232 842.0352 168.40704 851.21024 179.712 851.21024zM200.192 586.71104l223.51872 0 0 223.51872L200.192 810.22976 200.192 586.71104z"
-                p-id="3288"
-              ></path>
-              <path
-                d="M509.15328 830.73024c0 11.32544 9.15456 20.48 20.48 20.48l264.47872 0c11.32544 0 20.48-9.15456 20.48-20.48L814.592 566.23104c0-11.32544-9.15456-20.48-20.48-20.48L529.63328 545.75104c-11.32544 0-20.48 9.15456-20.48 20.48L509.15328 830.73024zM550.11328 586.71104l223.51872 0 0 223.51872L550.11328 810.22976 550.11328 586.71104z"
-                p-id="3289"
-              ></path>
-            </svg>
-
-            <svg
-              v-else
-              t="1677589611678"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="2294"
-              width="20"
-              height="20"
-            >
-              <path
-                d="M912 192H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM912 476H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM912 760H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"
-                p-id="2295"
-              ></path>
-              <path d="M160 228m-56 0a56 56 0 1 0 112 0 56 56 0 1 0-112 0Z" p-id="2296"></path>
-              <path d="M160 512m-56 0a56 56 0 1 0 112 0 56 56 0 1 0-112 0Z" p-id="2297"></path>
-              <path d="M160 796m-56 0a56 56 0 1 0 112 0 56 56 0 1 0-112 0Z" p-id="2298"></path>
-            </svg>
-          </button>
+          <example-switch />
         </div>
         <template v-if="list.length">
           <div class="mb-4 border-b pb-4">
@@ -196,10 +169,11 @@ import { ref } from 'vue'
 import type { ExampleItem } from '@/types'
 import { Dialog, DialogPanel } from '@headlessui/vue'
 import { onClickOutside } from '@vueuse/core'
+import ExampleSwitch from '@/components/ExampleSwitch.vue'
 const { isExampleOpen: isOpen } = storeToRefs(useDialogStore())
 
 const target = ref(null)
-onClickOutside(target, (event) => {
+onClickOutside(target, (_) => {
   isOpen.value = false
 })
 
@@ -208,10 +182,6 @@ const { complementConfig } = storeToRefs(configStore)
 const { list } = storeToRefs(useCustomExampleStore())
 
 const { isPending, run } = useHttp()
-
-const appConfigStore = useAppConfigStore()
-const { toggleExampleType } = appConfigStore
-const { isList } = storeToRefs(appConfigStore)
 
 const store = useHistoryStore()
 const { add: addHistoryItem, update: updateHistoryItem, clear } = store
