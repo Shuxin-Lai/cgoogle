@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
-    "preview": "vite preview --port 8004",
-    "deploy:local": "pm2 start npm --name coogle -- run preview",
+    "preview": "vite preview --port 8008 --host 0.0.0.0",
+    "deploy": "npm run build-only && pm2 start npm --name coogle -- run preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
