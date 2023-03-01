@@ -7,7 +7,7 @@
           <div class="relative max-h-screen overflow-auto py-12">
             <div class="absolute right-4 top-16 flex">
               <example-switch />
-              <button class="btn-ghost btn">
+              <button class="btn-ghost btn" @click="isOpen = false">
                 <svg
                   t="1677590028203"
                   class="cursor-pointer"
@@ -17,7 +17,6 @@
                   p-id="5303"
                   width="20"
                   height="20"
-                  @click="isOpen = false"
                 >
                   <path
                     d="M556.8 512L832 236.8c12.8-12.8 12.8-32 0-44.8-12.8-12.8-32-12.8-44.8 0L512 467.2l-275.2-277.333333c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l275.2 277.333333-277.333333 275.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.933333 8.533333 23.466666 8.533333s17.066667-2.133333 23.466667-8.533333L512 556.8 787.2 832c6.4 6.4 14.933333 8.533333 23.466667 8.533333s17.066667-2.133333 23.466666-8.533333c12.8-12.8 12.8-32 0-44.8L556.8 512z"
@@ -27,7 +26,7 @@
                 </svg>
               </button>
             </div>
-            <div class="bg-white p-8">
+            <div class="bg-white p-8 pt-16">
               <template v-if="list.length">
                 <div class="mb-4 border-b pb-4">
                   <example-list :is-custom="true" :list="list" @click="handleClickExample" />
