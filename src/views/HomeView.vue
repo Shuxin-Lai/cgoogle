@@ -20,8 +20,11 @@
     </Dialog>
   </teleport>
 
-  <div class="flex w-full pb-8">
-    <div class="left min-h-screen flex-1 border-r pt-4 pr-8">
+  <div class="flex pb-8">
+    <div
+      class="left min-h-screen flex-1 border-r pt-4 pr-8"
+      :style="'max-width: calc(100% - 24rem);'"
+    >
       <div class="prompt-input">
         <div class="form-control">
           <label class="label">
@@ -31,6 +34,7 @@
             <textarea
               v-model="complementConfig['prompt']"
               ref="inputRef"
+              id="prompt-input"
               class="textarea-bordered textarea w-full"
               rows="5"
               :placeholder="placeholder"
@@ -76,10 +80,10 @@
         </div>
       </div>
 
-      <div class="submit mt-4 flex justify-end gap-2">
-        <button class="btn-success btn-sm btn" @click="isOpen = true">Examples</button>
+      <div class="submit mt-4 flex justify-end gap-4">
+        <button class="btn-outline btn-sm btn" @click="isOpen = true">Examples</button>
         <button
-          :class="{ loading: isPending, disabled: isPending }"
+          :class="{ loading: isPaused, disabled: isPaused }"
           class="btn-primary btn-sm btn"
           @click="handleSubmit"
         >
@@ -215,6 +219,7 @@ const { historyList } = storeToRefs(store)
 const placeholder = ref('I want to...')
 const currentExample = ref<ExampleItem | null>()
 const inputRef = ref<HTMLInputElement>()
+const isPaused = ref(false)
 
 const handleClickExample = (e: ExampleItem) => {
   isOpen.value = false
@@ -231,6 +236,10 @@ const handleSubmit = async () => {
 
   const HistoryItem = addHistoryItem(complementConfig.value)
   try {
+    isPaused.value = true
+    setTimeout(() => {
+      isPaused.value = false
+    }, 1000)
     const result = await run(createCompletion(HistoryItem.config))
     updateHistoryItem(HistoryItem.clientId, {
       result: result.data!,

@@ -1,6 +1,29 @@
 <template>
   <div class="relative border bg-base-100 px-4 py-2">
-    <div class="absolute right-4 top-2">
+    <div class="absolute right-4 top-2 flex gap-4">
+      <div class="clear cursor-pointer" @click="handleRewrite">
+        <svg
+          t="1677681937524"
+          class="icon"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="2269"
+          width="20"
+          height="20"
+        >
+          <path
+            d="M853.333333 501.333333c-17.066667 0-32 14.933333-32 32v320c0 6.4-4.266667 10.666667-10.666666 10.666667H170.666667c-6.4 0-10.666667-4.266667-10.666667-10.666667V213.333333c0-6.4 4.266667-10.666667 10.666667-10.666666h320c17.066667 0 32-14.933333 32-32s-14.933333-32-32-32H170.666667c-40.533333 0-74.666667 34.133333-74.666667 74.666666v640c0 40.533333 34.133333 74.666667 74.666667 74.666667h640c40.533333 0 74.666667-34.133333 74.666666-74.666667V533.333333c0-17.066667-14.933333-32-32-32z"
+            fill="#666666"
+            p-id="2270"
+          ></path>
+          <path
+            d="M405.333333 484.266667l-32 125.866666c-2.133333 10.666667 0 23.466667 8.533334 29.866667 6.4 6.4 14.933333 8.533333 23.466666 8.533333h8.533334l125.866666-32c6.4-2.133333 10.666667-4.266667 14.933334-8.533333l300.8-300.8c38.4-38.4 38.4-102.4 0-140.8-38.4-38.4-102.4-38.4-140.8 0L413.866667 469.333333c-4.266667 4.266667-6.4 8.533333-8.533334 14.933334z m59.733334 23.466666L761.6 213.333333c12.8-12.8 36.266667-12.8 49.066667 0 12.8 12.8 12.8 36.266667 0 49.066667L516.266667 558.933333l-66.133334 17.066667 14.933334-68.266667z"
+            fill="#666666"
+            p-id="2271"
+          ></path>
+        </svg>
+      </div>
       <div class="clear cursor-pointer" @click="handleRemove">
         <svg
           t="1677590028203"
@@ -54,9 +77,11 @@
           :key="index"
           :class="{ 'mb-4 border-b pb-4': index != choices.length - 1 }"
         >
-          <div>
+          <pre
+            style="white-space: pre-wrap; word-wrap: break-word; line-height: 1.35; font-size: 15px"
+          >
             {{ choice.text }}
-          </div>
+          </pre>
           <div class="flex justify-end">
             <button
               class="btn-link btn font-normal capitalize text-black"
@@ -97,7 +122,10 @@ const handleCopy = async (choice: CreateCompletionResponseChoicesInner) => {
   await copy(choice.text || '')
   globalToast.success('Copied')
 }
-const emit = defineEmits(['remove'])
+const emit = defineEmits(['remove', 'rewrite'])
+const handleRewrite = () => {
+  emit('rewrite')
+}
 const handleRemove = () => {
   emit('remove')
 }
