@@ -8,7 +8,7 @@ import { computed, getCurrentInstance, onMounted, reactive, ref, toRaw, watch } 
 
 const DEFAULT_COMPLEMENT_CONFIG: CreateCompletionRequest = {
   n: 1,
-  model: 'text-davinci-003',
+  model: 'gpt-3.5-turbo',
   prompt: '',
   temperature: 0.6,
   stop: undefined,

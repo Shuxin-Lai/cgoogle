@@ -114,6 +114,10 @@ const complementFields = [
     type: 'select',
     options: [
       {
+        value: 'gpt-3.5-turbo',
+        label: 'gpt-3.5-turbo',
+      },
+      {
         value: 'text-davinci-003',
         label: '(GPT-3) text-davinci-003',
       },
