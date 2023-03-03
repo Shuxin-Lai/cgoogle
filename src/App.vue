@@ -4,4 +4,6 @@
   </default-layout>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import DefaultLayout from './layouts/DefaultLayout.vue'
+</script>

@@ -2,7 +2,7 @@
 import axios, { type AxiosResponse } from 'axios'
 import type { AxiosInstance, CreateAxiosDefaults, AxiosRequestConfig } from 'axios'
 import makeError from 'make-error'
-import type { Promisable } from '@/types'
+import type { Promisable, Stat } from '@/types'
 import { L_TOKEN } from '@/constants'
 
 import { merge } from 'lodash-es'
@@ -15,7 +15,7 @@ export interface VtHttpBackendData<T> {
 
 export interface VtHttpResponse<T> {
   data?: T | null
-  stat: 'pending' | 'success' | 'error' | 'canceled' | 'init'
+  stat: Stat
   requestId: string
   message?: string
   error?: InstanceType<typeof VtHttpError>

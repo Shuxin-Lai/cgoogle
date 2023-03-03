@@ -6,7 +6,7 @@ import router from './router'
 
 // style
 import '@/assets/styles/tailwind.css'
-import '@/assets/styles/index.css'
+import '@/assets/styles/index.scss'
 import 'vue-toastification/dist/index.css'
 import { provideAppToast } from './toast'
 
