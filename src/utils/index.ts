@@ -1,5 +1,3 @@
-export const U_TODO = 'todo'
-
 export function copyToClipboard(text: string) {
   const dummy = document.createElement('textarea')
   document.body.appendChild(dummy)
