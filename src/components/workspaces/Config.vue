@@ -9,18 +9,22 @@
           <h3>Config</h3>
         </div>
         <div class="mt-4"></div>
-        <c-form />
+        <c-form :config="config" :type="type" @update:config="(v) => emits('change', v)" />
       </div>
     </transition>
   </teleport>
 </template>
 
 <script setup lang="ts">
-import CForm from '@/components/CForm.vue'
+import CForm from '@/components/workspaces/CForm.vue'
 import { useGlobalConfigStore } from '@/stores'
+import type { ConfigType, HistoryData } from '@/types'
 import { storeToRefs } from 'pinia'
+defineProps<{ config: HistoryData['config']; type: ConfigType }>()
 
 const { isConfigOpen } = storeToRefs(useGlobalConfigStore())
+
+const emits = defineEmits(['change'])
 </script>
 
 <style scoped lang="scss">

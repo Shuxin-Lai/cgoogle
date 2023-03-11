@@ -8,6 +8,13 @@
     leave-from="opacity-100"
     leave-to="opacity-0"
   >
+    <config
+      v-if="currentTabConfig"
+      :config="currentTabConfig"
+      :type="activeTabName"
+      @change="handleChange"
+    />
+
     <div class="header flex h-8 items-center justify-between px-4">
       <div class="left">
         <div class="tooltip tooltip-right tooltip-primary" data-tip="Menu">
@@ -49,15 +56,18 @@
 </template>
 
 <script setup lang="ts">
+import Config from '@/components/workspaces/Config.vue'
 import { TransitionRoot } from '@headlessui/vue'
 import { useWorkspace } from '@/hooks'
 import MenuIcon from '@/components/MenuIcon.vue'
 import { useGlobalConfigStore } from '@/stores'
-import { storeToRefs } from 'pinia'
 
 const configStore = useGlobalConfigStore()
 const { toggleConfig, toggleDrawer } = configStore
-const { tabs, activeTabName, workspace } = useWorkspace()
+const { tabs, activeTabName, workspace, currentTabConfig } = useWorkspace()
+const handleChange = (config: any) => {
+  currentTabConfig.value = config
+}
 </script>
 
 <style scoped></style>

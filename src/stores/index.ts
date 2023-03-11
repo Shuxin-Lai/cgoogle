@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, onMounted, ref, toRaw, watch, type Ref } from 'vue'
+import { computed, onMounted, onBeforeMount, ref, toRaw, watch, type Ref } from 'vue'
 import localforage from 'localforage'
 import dayjs from 'dayjs'
 import { debounce, isObject, merge } from 'lodash-es'
@@ -106,7 +106,7 @@ function createStore<I extends Item<any>>(key: string, options?: CreateStoreOpti
       return items.value.find((i) => i.id == id)
     }
 
-    onMounted(async () => {
+    onBeforeMount(async () => {
       if (options?.init) {
         options.init(storage, items as any)
         return
@@ -187,20 +187,11 @@ export const useWorkspaceStore = createStore<WorkspaceItem>('workspace', {
 export const useExampleStore = createStore<ExampleItem>('example')
 
 export const useGlobalConfigStore = defineStore('config', () => {
-  const init = () => {
-    const _cacheConfigStr = window.localStorage.getItem(L_GLOBAL_CONFIG)
-    if (!_cacheConfigStr) {
-      return
-    }
-
-    config.value = shallowMerge({}, initialConfig, JSON.parse(_cacheConfigStr))
-  }
   const initialConfig = {
     isDrawerOpen: true,
     isConfigOpen: true,
   }
   const config = ref(initialConfig)
-  init()
 
   const isDrawerOpen = computed(() => config.value.isDrawerOpen)
   const isConfigOpen = computed(() => config.value.isConfigOpen)
@@ -211,6 +202,15 @@ export const useGlobalConfigStore = defineStore('config', () => {
   const toggleConfig = () => {
     config.value.isConfigOpen = !config.value.isConfigOpen
   }
+
+  onBeforeMount(() => {
+    const _cacheConfigStr = window.localStorage.getItem(L_GLOBAL_CONFIG)
+    if (!_cacheConfigStr) {
+      return
+    }
+
+    config.value = shallowMerge({}, initialConfig, JSON.parse(_cacheConfigStr))
+  })
 
   watch(
     config,
