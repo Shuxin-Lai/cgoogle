@@ -1,10 +1,15 @@
-import { useWorkspaceStore } from '@/stores'
+import { useExampleStore, useHistoryStore, useWorkspaceStore } from '@/stores'
 import type { ConfigType } from '@/types'
 import { cloneDeep, merge, set as lSet } from 'lodash-es'
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { builtinExampleList } from '@/data'
+import { storeToRefs } from 'pinia'
 
 export const useWorkspace = () => {
+  const exampleStore = useExampleStore()
+  const historyStore = useHistoryStore()
+  const { items: historyItems } = storeToRefs(historyStore)
   const route = useRoute()
   const workspaceId = computed(() => {
     return Number(route.params.id)
@@ -29,6 +34,38 @@ export const useWorkspace = () => {
     return cmps[cmps.length - 1] as ConfigType
   })
 
+  // example
+  const activeExampleId = computed(() => workspace.value?.data.activeExampleId)
+  const exampleList = computed(() => {
+    if (!workspaceId.value) {
+      return []
+    }
+    return exampleStore.find({
+      where: (item) => item.data.workspaceId == workspaceId.value,
+    })
+  })
+
+  const activeExample = computed(() => {
+    if (!activeExampleId.value) {
+      return null
+    }
+    const builtinExample = builtinExampleList.find((item) => item.id == activeExampleId.value)
+    if (builtinExample) {
+      return builtinExample
+    }
+    return exampleList.value.find((item) => item.id == activeExampleId.value)
+  })
+
+  const historyList = computed(() => {
+    if (workspaceId.value == null) {
+      return []
+    }
+
+    return historyStore.find({
+      where: (item) => item.data.workspaceId == workspaceId.value,
+    })
+  })
+
   const config = computed({
     get: () => {
       return workspace.value?.data.config
@@ -51,11 +88,7 @@ export const useWorkspace = () => {
       return config.value[activeTabName.value]
     },
     set(tabConfig) {
-      config.value = lSet(
-        config.value!,
-        activeTabName.value,
-        merge(config.value![activeTabName.value], tabConfig),
-      )
+      config.value = lSet(config.value!, activeTabName.value, tabConfig)
     },
   })
 
@@ -77,5 +110,9 @@ export const useWorkspace = () => {
     workspaceId,
     config,
     currentTabConfig,
+    activeExampleId,
+    activeExample,
+    exampleList,
+    historyList,
   }
 }

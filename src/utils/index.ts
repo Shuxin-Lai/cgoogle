@@ -1,3 +1,5 @@
+export * from './day-utils'
+
 export function copyToClipboard(text: string) {
   const dummy = document.createElement('textarea')
   document.body.appendChild(dummy)
@@ -8,3 +10,11 @@ export function copyToClipboard(text: string) {
 }
 
 export const shallowMerge = Object.assign
+
+export const sleep = (timeout = 16) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(timeout)
+    }, timeout)
+  })
+}

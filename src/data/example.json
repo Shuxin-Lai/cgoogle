@@ -9,6 +9,7 @@
     ],
     "prompt": "I am a highly intelligent question answering bot. If you ask me a question that is rooted in truth, I will give you the answer. If you ask me a question that is nonsense, trickery, or has no clear answer, I will respond with \"Unknown\".\n\nQ: What is human life expectancy in the United States?\nA: Human life expectancy in the United States is 78 years.\n\nQ: Who was president of the United States in 1955?\nA: Dwight D. Eisenhower was president of the United States in 1955.\n\nQ: Which party did he belong to?\nA: He belonged to the Republican Party.\n\nQ: What is the square root of banana?\nA: Unknown\n\nQ: How does a telescope work?\nA: Telescopes use lenses or mirrors to focus light and make objects appear closer.\n\nQ: Where were the 1992 Olympics held?\nA: The 1992 Olympics were held in Barcelona, Spain.\n\nQ: How many squigs are in a bonk?\nA: Unknown\n\nQ: Where is the Valley of Kings?\nA:",
     "response": "The Valley of Kings is located in Luxor, Egypt.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 100,
@@ -31,6 +32,7 @@
     ],
     "prompt": "Correct this to standard English:\n\nShe no went to the market.",
     "response": "She did not go to the market.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -49,6 +51,7 @@
     ],
     "prompt": "Summarize this for a second-grade student:\n\nJupiter is the fifth planet from the Sun and the largest in the Solar System. It is a gas giant with a mass one-thousandth that of the Sun, but two-and-a-half times that of all the other planets in the Solar System combined. Jupiter is one of the brightest objects visible to the naked eye in the night sky, and has been known to ancient civilizations since before recorded history. It is named after the Roman god Jupiter.[19] When viewed from Earth, Jupiter can be bright enough for its reflected light to cast visible shadows,[20] and is on average the third-brightest natural object in the night sky after the Moon and Venus.",
     "response": "Jupiter is the fifth planet from the Sun and is very big and bright. It can be seen with our eyes in the night sky and it has been known since ancient times. Its name comes from the Roman god Jupiter. It is usually the third brightest object in the night sky after the Moon and Venus.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "temperature": 0.7
@@ -66,6 +69,7 @@
     ],
     "prompt": "\"\"\"\nUtil exposes the following:\nutil.openai() -> authenticates & returns the openai module, which has the following functions:\nopenai.Completion.create(\n    prompt=\"<my prompt>\", # The prompt to start completing from\n    max_tokens=123, # The max number of tokens to generate\n    temperature=1.0 # A measure of randomness\n    echo=True, # Whether to return the prompt in addition to the generated completion\n)\n\"\"\"\nimport util\n\"\"\"\nCreate an OpenAI completion starting from the prompt \"Once upon an AI\", no more than 5 tokens. Does not include the prompt.\n\"\"\"\n",
     "response": "completion = util.openai().Completion.create(\nprompt=\"Once upon an AI\",\nmax_tokens=5,\ntemperature=1.0,\necho=False,\n)\nprint(completion)\n\"\"\"\n",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "max_tokens": 64,
@@ -87,6 +91,7 @@
     ],
     "prompt": "Convert this text to a programmatic command:\n\nExample: Ask Constance if we need some bread\nOutput: send-msg `find constance` Do we need some bread?\n\nReach out to the ski store and figure out if I can get my skis fixed before I leave on Thursday",
     "response": "send-msg `find ski store` Can I get my skis fixed before I leave on Thursday?",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 100,
@@ -109,6 +114,7 @@
     ],
     "prompt": "Translate this into 1. French, 2. Spanish and 3. Japanese:\n\nWhat rooms do you have available?\n\n1.",
     "response": "Quels sont les chambres que vous avez disponibles?\n2. ¿Qué habitaciones tienes disponibles?\n3. どの部屋が利用可能ですか？",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 100,
@@ -127,6 +133,7 @@
     ],
     "prompt": "\"\"\"\nUtil exposes the following:\n\nutil.stripe() -> authenticates & returns the stripe module; usable as stripe.Charge.create etc\n\"\"\"\nimport util\n\"\"\"\nCreate a Stripe token using the users credit card: 5555-4444-3333-2222, expiration date 12 / 28, cvc 521\n\"\"\"",
     "response": "token = util.stripe().Token.create(\ncard={\n    \"number\": '5555-4444-3333-2222',\n    \"exp_month\": 12,\n    \"exp_year\": 28,\n    \"cvc\": '521'\n},\n)\n\n\"\"\"          \n",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "max_tokens": 100,
@@ -148,6 +155,7 @@
     ],
     "prompt": "### Postgres SQL tables, with their properties:\n#\n# Employee(id, name, department_id)\n# Department(id, name, address)\n# Salary_Payments(id, employee_id, amount, date)\n#\n### A query to list the names of the departments which employed more than 10 employees in the last 3 months\nSELECT",
     "response": " DISTINCT department.name \nFROM department \nJOIN employee ON department.id = employee.department_id \nJOIN salary_payments ON employee.id = salary_payments.employee_id \nWHERE salary_payments.date > (CURRENT_DATE - INTERVAL '3 months') \nGROUP BY department.name \nHAVING COUNT(employee.id) > 10;",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "max_tokens": 150,
@@ -170,6 +178,7 @@
     ],
     "prompt": "A table summarizing the fruits from Goocrux:\n\nThere are many fruits that were found on the recently discovered planet Goocrux. There are neoskizzles that grow there, which are purple and taste like candy. There are also loheckles, which are a grayish blue fruit and are very tart, a little bit like a lemon. Pounits are a bright green color and are more savory than sweet. There are also plenty of loopnovas which are a neon pink flavor and taste like cotton candy. Finally, there are fruits called glowls, which have a very sour and bitter taste which is acidic and caustic, and a pale orange tinge to them.\n\n| Fruit | Color | Flavor |",
     "response": "| Neoskizzles | Purple | Candy |\n| Loheckles | Grayish Blue | Tart, like a lemon |\n| Pounits | Bright Green | Savory |\n| Loopnovas | Neon Pink | Cotton Candy |\n| Glowls | Pale Orange | Sour and Bitter, Acidic and Caustic |",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 100,
@@ -188,6 +197,7 @@
     ],
     "prompt": "The following is a list of companies and the categories they fall into:\n\nApple, Facebook, Fedex\n\nApple\nCategory:",
     "response": "Technology\n\nFacebook\nCategory: Social Media\n\nFedex\nCategory: Delivery",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "temperature": 0
@@ -205,6 +215,7 @@
     ],
     "prompt": "# Python 3 \ndef remove_common_prefix(x, prefix, ws_prefix): \n    x[\"completion\"] = x[\"completion\"].str[len(prefix) :] \n    if ws_prefix: \n        # keep the single whitespace as prefix \n        x[\"completion\"] = \" \" + x[\"completion\"] \nreturn x \n\n# Explanation of what the code does\n\n#",
     "response": "The code above is a function that takes a dataframe and a prefix as input and returns a dataframe with the prefix removed from the completion column.",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "max_tokens": 64,
@@ -224,6 +235,7 @@
     ],
     "prompt": "Convert movie titles into emoji.\n\nBack to the Future: 👨👴🚗🕒 \nBatman: 🤵🦇 \nTransformers: 🚗🤖 \nStar Wars:",
     "response": "⭐️⚔",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -245,6 +257,7 @@
     ],
     "prompt": "def foo(n, k):\naccum = 0\nfor i in range(n):\n    for l in range(k):\n        accum += i\nreturn accum\n\"\"\"\nThe time complexity of this function is",
     "response": "O(n*k). This is because the function has two nested for loops, each of which has a time complexity of O(n) and O(k) respectively. Therefore, the total time complexity is the product of the two, which is O(n*k).",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 64,
@@ -266,6 +279,7 @@
     ],
     "prompt": "##### Translate this function  from Python into Haskell\n### Python\n    \n    def predict_proba(X: Iterable[str]):\n        return np.array([predict_one_probas(tweet) for tweet in X])\n    \n### Haskell",
     "response": "predict_proba :: [String] -> [Probability] \npredict_proba = map predict_one_probas",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "max_tokens": 54,
@@ -287,6 +301,7 @@
     ],
     "prompt": "Classify the sentiment in these tweets:\n\n1. \"I can't stand homework\"\n2. \"This sucks. I'm bored 😠\"\n3. \"I can't wait for Halloween!!!\"\n4. \"My cat is adorable ❤️❤️\"\n5. \"I hate chocolate\"\n\nTweet sentiment ratings:",
     "response": "1. Negative\n2. Negative\n3. Positive\n4. Positive\n5. Negative",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -306,6 +321,7 @@
     ],
     "prompt": "class Log:\n    def __init__(self, path):\n        dirname = os.path.dirname(path)\n        os.makedirs(dirname, exist_ok=True)\n        f = open(path, \"a+\")\n\n        # Check that the file is newline-terminated\n        size = os.path.getsize(path)\n        if size > 0:\n            f.seek(size - 1)\n            end = f.read(1)\n            if end != \"\\n\":\n                f.write(\"\\n\")\n        self.f = f\n        self.path = path\n\n    def log(self, event):\n        event[\"_event_id\"] = str(uuid.uuid4())\n        json.dump(event, self.f)\n        self.f.write(\"\\n\")\n\n    def state(self):\n        state = {\"complete\": set(), \"last\": None}\n        for line in open(self.path):\n            event = json.loads(line)\n            if event[\"type\"] == \"submit\" and event[\"success\"]:\n                state[\"complete\"].add(event[\"id\"])\n                state[\"last\"] = event\n        return state\n\n\"\"\"\nHere's what the above class is doing:\n1.",
     "response": "  The constructor creates a directory for the log file if it doesn't exist.\n2.  The log() method writes a JSON-encoded event to the log file.\n3.  The state() method returns a dictionary with the set of complete tasks and the most recent event.",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "max_tokens": 64,
@@ -327,6 +343,7 @@
     ],
     "prompt": "Extract keywords from this text:\n\nBlack-on-black ware is a 20th- and 21st-century pottery tradition developed by the Puebloan Native American ceramic artists in Northern New Mexico. Traditional reduction-fired blackware has been made for centuries by pueblo artists. Black-on-black ware of the past century is produced with a smooth surface, with the designs applied through selective burnishing or the application of refractory slip. Another style involves carving or incising designs and selectively polishing the raised areas. For generations several families from Kha'po Owingeh and P'ohwhóge Owingeh pueblos have been making black-on-black ware with the techniques passed down from matriarch potters. Artists from other pueblos have also produced black-on-black ware. Several contemporary artists have created works honoring the pottery of their ancestors.",
     "response": "Keywords: Black-on-black ware, 20th century, 21st century, Puebloan Native American ceramic artists, Northern New Mexico, reduction-fired blackware, pueblo artists, selective burnishing, refractory slip, carving/incising designs, polishing",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -349,6 +366,7 @@
     ],
     "prompt": "Q: Who is Batman?\nA: Batman is a fictional comic book character.\n\nQ: What is torsalplexity?\nA: ?\n\nQ: What is Devz9?\nA: ?\n\nQ: Who is George Lucas?\nA: George Lucas is American film director and producer famous for creating Star Wars.\n\nQ: What is the capital of California?\nA: Sacramento.\n\nQ: What orbits the Earth?\nA: The Moon.\n\nQ: Who is Fred Rickerson?\nA: ?\n\nQ: What is an atom?\nA: An atom is a tiny particle that makes up everything.\n\nQ: Who is Alvan Muntz?\nA: ?\n\nQ: What is Kozar-09?\nA: ?\n\nQ: How many moons does Mars have?\nA: Two, Phobos and Deimos.\n\nQ: What's a language model?\nA:",
     "response": "A language model is a type of artificial intelligence that uses statistical techniques to predict the probability of a sequence of words.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -366,6 +384,7 @@
     ],
     "prompt": "Write a creative ad for the following product to run on Facebook aimed at parents:\n\nProduct: Learning Room is a virtual environment to help students from kindergarten to high school excel in school.",
     "response": "Are you looking for a way to give your child a head start in school? Look no further than Learning Room! Our virtual environment is designed to help students from kindergarten to high school excel in their studies. Our unique platform offers personalized learning plans, interactive activities, and real-time feedback to ensure your child is getting the most out of their education. Give your child the best chance to succeed in school with Learning Room!",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 100,
@@ -383,6 +402,7 @@
     ],
     "prompt": "Product description: A home milkshake maker\nSeed words: fast, healthy, compact.\nProduct names: HomeShaker, Fit Shaker, QuickShake, Shake Maker\n\nProduct description: A pair of shoes that can fit any foot size.\nSeed words: adaptable, fit, omni-fit.",
     "response": "Product names: AdaptFit, OmniSecure, Fit-All, AdaptShoes.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -401,6 +421,7 @@
     ],
     "prompt": "A neutron star is the collapsed core of a massive supergiant star, which had a total mass of between 10 and 25 solar masses, possibly more if the star was especially metal-rich.[1] Neutron stars are the smallest and densest stellar objects, excluding black holes and hypothetical white holes, quark stars, and strange stars.[2] Neutron stars have a radius on the order of 10 kilometres (6.2 mi) and a mass of about 1.4 solar masses.[3] They result from the supernova explosion of a massive star, combined with gravitational collapse, that compresses the core past white dwarf star density to that of atomic nuclei.\n\nTl;dr",
     "response": "Neutron stars are the collapsed cores of massive supergiant stars, with a radius of around 10 kilometres and a mass of 1.4 solar masses. They are formed from the supernova explosion of a massive star combined with gravitational collapse, compressing the core beyond white dwarf star density.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -420,6 +441,7 @@
     ],
     "prompt": "##### Fix bugs in the below function\n \n### Buggy Python\nimport Random\na = random.randint(1,12)\nb = random.randint(1,12)\nfor i in range(10):\n    question = \"What is \"+a+\" x \"+b+\"? \"\n    answer = input(question)\n    if answer = a*b\n        print (Well done!)\n    else:\n        print(\"No.\")\n    \n### Fixed Python",
     "response": "import random\na = random.randint(1,12)\nb = random.randint(1,12)\nfor i in range(10):\n    question = \"What is \"+str(a)+\" x \"+str(b)+\"? \"\n    answer = input(question)\n    if answer == str(a*b):\n        print (\"Well done!\")\n    else:\n        print(\"No.\")",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "max_tokens": 182,
@@ -441,6 +463,7 @@
     ],
     "prompt": "A two-column spreadsheet of top science fiction movies and the year of release:\n\nTitle |  Year of release",
     "response": "Alien | 1979 \nBlade Runner | 1982 \nThe Terminator | 1984 \nThe Matrix | 1999 \nAvatar | 2009 \nInterstellar | 2014 \nEx Machina | 2015 \nArrival | 2016 \nReady Player One | 2018",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -460,6 +483,7 @@
     ],
     "prompt": "You: How do I combine arrays?\nJavaScript chatbot: You can use the concat() method.\nYou: How do you make an alert appear after 10 seconds?\nJavaScript chatbot",
     "response": ": You can use the setTimeout() method.",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "max_tokens": 60,
@@ -483,6 +507,7 @@
       "Conversation"
     ],
     "prompt": "ML Tutor: I am a ML/AI language model tutor\nYou: What is a language model?\nML Tutor: A language model is a statistical model that describes the probability of a word given the previous words.\nYou: What is a statistical model?",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -506,6 +531,7 @@
     ],
     "prompt": "List 10 science fiction books:",
     "response": "1. 1984 by George Orwell\n2. The War of the Worlds by H.G. Wells\n3. Dune by Frank Herbert\n4. Frankenstein by Mary Shelley\n5. Ender's Game by Orson Scott Card\n6. The Hitchhiker's Guide to the Galaxy by Douglas Adams\n7. The Martian Chronicles by Ray Bradbury\n8. Brave New World by Aldous Huxley \n9. Do Androids Dream of Electric Sheep? By Philip K Dick \n10. I, Robot by Isaac Asimov",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 200,
@@ -529,6 +555,7 @@
     ],
     "prompt": "Decide whether a Tweet's sentiment is positive, neutral, or negative.\n\nTweet: \"I loved the new Batman movie!\"\nSentiment:",
     "response": "Positive",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -549,6 +576,7 @@
     ],
     "prompt": "Extract the airport codes from this text:\n\nText: \"I want to fly from Los Angeles to Miami.\"\nAirport codes: LAX, MIA\n\nText: \"I want to fly from Orlando to Boston\"\nAirport codes:",
     "response": "MCO, BOS",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -572,6 +600,7 @@
     ],
     "prompt": "Create a SQL request to find all users who live in California and have over 1000 credits:",
     "response": "SELECT *\nFROM users\nWHERE state = 'California' AND credits > 1000;",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -590,6 +619,7 @@
     ],
     "prompt": "Extract the name and mailing address from this email:\n\nDear Kelly,\n\nIt was great to talk to you at the seminar. I thought Jane's talk was quite good.\n\nThank you for the book. Here's my address 2111 Ash Lane, Crestview CA 92002\n\nBest,\n\nMaya\n\nName:",
     "response": "Maya\nMailing Address: 2111 Ash Lane, Crestview CA 92002",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "temperature": 0
@@ -608,6 +638,7 @@
     ],
     "prompt": "#JavaScript to Python:\nJavaScript: \ndogs = [\"bill\", \"joe\", \"carl\"]\ncar = []\ndogs.forEach((dog) {\n    car.push(dog);\n});\n\nPython:",
     "response": "dogs = [\"bill\", \"joe\", \"carl\"]\ncar = []\nfor dog in dogs:\n    car.append(dog)",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "temperature": 0
@@ -625,6 +656,7 @@
     ],
     "prompt": "You: What have you been up to?\nFriend: Watching old movies.\nYou: Did you watch anything interesting?\nFriend:",
     "response": "Yeah, I watched an old classic called Casablanca. It was really good!",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -647,6 +679,7 @@
     ],
     "prompt": "The CSS code for a color like a blue sky at dusk:\n\nbackground-color: #",
     "response": "3A5F9F",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "temperature": 0,
@@ -667,6 +700,7 @@
     ],
     "prompt": "# Python 3.7\n \ndef randomly_split_dataset(folder, filename, split_ratio=[0.8, 0.2]):\n    df = pd.read_json(folder + filename, lines=True)\n    train_name, test_name = \"train.jsonl\", \"test.jsonl\"\n    df_train, df_test = train_test_split(df, test_size=split_ratio[1], random_state=42)\n    df_train.to_json(folder + train_name, orient='records', lines=True)\n    df_test.to_json(folder + test_name, orient='records', lines=True)\nrandomly_split_dataset('finetune_data/', 'dataset.jsonl')\n    \n# An elaborate, high quality docstring for the above function:\n\"\"\"",
     "response": "\"\"\" Randomly split a dataset into train and test. \n\nParameters \n---------- \nfolder : str\n    The folder where the dataset is located. \nfilename : str \n    The name of the dataset file. \nsplit_ratio : list, optional \n    The ratio of train and test, by default [0.8, 0.2] \n\nReturns \n------- \nNone \n    The function doesn't return anything, it just saves the train and test datasets in the given folder. \n\"\"\"",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "max_tokens": 150,
@@ -688,6 +722,7 @@
     ],
     "prompt": "Create an analogy for this phrase:\n\nQuestions are arrows in that:",
     "response": "Questions are like arrows in that they both have the power to pierce through the surface and uncover the truth that lies beneath.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -707,6 +742,7 @@
     ],
     "prompt": "Use list comprehension to convert this into one line of JavaScript:\n\ndogs.forEach((dog) => {\n    car.push(dog);\n});\n\nJavaScript one line version:",
     "response": "dogs.forEach(dog => car.push(dog))",
+    "type": "code",
     "config": {
       "model": "code-davinci-002",
       "max_tokens": 60,
@@ -729,6 +765,7 @@
     ],
     "prompt": "Topic: Breakfast\nTwo-Sentence Horror Story: He always stops crying when I pour the milk on his cereal. I just have to remember not to let him see his face on the carton.\n    \nTopic: Wind\nTwo-Sentence Horror Story:",
     "response": "The wind howled through the night, shaking the windows of the house with a sinister force. As I stepped outside, I could feel it calling out to me, beckoning me to follow its chilling path.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -749,6 +786,7 @@
     ],
     "prompt": "Convert this from first-person to third person (gender female):\n\nI decided to make a movie about Ada Lovelace.",
     "response": "She decided to make a movie about Ada Lovelace.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -767,6 +805,7 @@
     ],
     "prompt": "Convert my short hand into a first-hand account of the meeting:\n\nTom: Profits up 50%\nJane: New servers are online\nKjel: Need more time to fix software\nJane: Happy to help\nParkman: Beta testing almost done",
     "response": "At the meeting, Tom reported that profits had increased by 50%. Jane then mentioned that the new servers were online. Kjel mentioned that they needed more time to fix the software, and Jane offered to help. Finally, Parkman reported that the beta testing was almost done.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "temperature": 0
@@ -783,6 +822,7 @@
     ],
     "prompt": "Brainstorm some ideas combining VR and fitness:",
     "response": "1. Virtual reality-based fitness classes \n2. Home workout programs using virtual reality technology \n3. Interactive video game-style workouts with a virtual trainer \n4. Virtual running races against other players in VR worlds \n5. Immersive yoga and Pilates sessions set in exotic locations \n6. Sports simulations involving simulated physical activity within the VR world \n7. Group fitness challenges that involve competing against opponents in a virtual environment  \n8. Adaptive exercise programs tailored to individual’s goals or health conditions",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 150,
@@ -802,6 +842,7 @@
     ],
     "prompt": "Create an outline for an essay about Nikola Tesla and his contributions to technology:",
     "response": "I. Introduction\nA. Who was Nikola Tesla?\nB. Overview of his contributions to technology\n\nII. Early Life and Education\nA. Where and when Tesla was born\nB. His education and early career\n\nIII. Tesla's Contributions to Technology\nA. Alternating Current\nB. Radio and Remote Control\nC. Robotics\nD. X-Rays\n\nIV. Tesla's Later Years\nA. His later inventions\nB. His death and legacy\n\nV. Conclusion\nA. Summary of Tesla's life and accomplishments\nB. Impact of Tesla's work on modern technology",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "temperature": 0.3,
@@ -818,6 +859,7 @@
       "Generation"
     ],
     "prompt": "Write a recipe based on these ingredients and instructions:\n\nFrito Pie\n\nIngredients:\nFritos\nChili\nShredded cheddar cheese\nSweet white or red onions, diced small\nSour cream\n\nInstructions:",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 120,
@@ -837,6 +879,7 @@
     ],
     "prompt": "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\n\nHuman: Hello, who are you?\nAI: I am an AI created by OpenAI. How can I help you today?\nHuman: I'd like to cancel my subscription.\nAI:",
     "response": "I understand, I can help you with canceling your subscription. Please provide me with your account details so that I can begin processing the cancellation.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 150,
@@ -861,6 +904,7 @@
     ],
     "prompt": "Marv is a chatbot that reluctantly answers questions with sarcastic responses:\n\nYou: How many pounds are in a kilogram?\nMarv: This again? There are 2.2 pounds in a kilogram. Please make a note of this.\nYou: What does HTML stand for?\nMarv: Was Google too busy? Hypertext Markup Language. The T is for try to ask better questions in the future.\nYou: When did the first airplane fly?\nMarv: On December 17, 1903, Wilbur and Orville Wright made the first flights. I wish they’d come and take me away.\nYou: What is the meaning of life?\nMarv: I’m not sure. I’ll ask my friend Google.\nYou: What time is it?\nMarv:",
     "response": "It's always time to learn something new. Check your watch for the actual time.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 60,
@@ -881,6 +925,7 @@
     ],
     "prompt": "Create a numbered list of turn-by-turn directions from this text: \n\nGo south on 95 until you hit Sunrise boulevard then take it east to us 1 and head south. Tom Jenkins bbq will be on the left after several miles.",
     "response": "1. Go south on 95 \n2. Take Sunrise Boulevard east \n3. Head south on US 1 \n4. Tom Jenkins BBQ will be on the left after several miles",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "temperature": 0.3
@@ -897,6 +942,7 @@
     ],
     "prompt": "Write a restaurant review based on these notes:\n\nName: The Blue Wharf\nLobster great, noisy, service polite, prices good.\n\nReview:",
     "response": "I recently visited The Blue Wharf and had a wonderful experience. The lobster was excellent and the prices were very good. The only downside was the noise level, but the polite service more than made up for it. Highly recommend!",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "temperature": 0.5
@@ -913,6 +959,7 @@
     ],
     "prompt": "What are 5 key points I should know when studying Ancient Rome?",
     "response": "1. Understand the Roman Republic and its political and social structures.\n2. Learn about the major events and people of the Roman Empire, including the Pax Romana.\n3. Familiarize yourself with Roman culture and society, including language, art, architecture, literature, law, and religion.\n4. Study the Roman military, its tactics and organization, and its effects on the empire.\n5. Examine the decline of the Roman Empire, its eventual fall, and its legacy.",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "temperature": 0.3,
@@ -930,6 +977,7 @@
     ],
     "prompt": "Create a list of 8 questions for my interview with a science fiction author:",
     "response": "1. What inspired you to write science fiction?\n2. What themes do you typically explore in your work?\n3. How has the genre of science fiction evolved over time?\n4. What do you think sets your work apart from other science fiction authors?\n5. What advice would you give to aspiring science fiction authors?\n6. What are some of the most challenging aspects of writing science fiction?\n7. How has your writing process changed over the years?\n8. What do you think is the most important thing for readers to take away from your work?",
+    "type": "writer",
     "config": {
       "model": "text-davinci-003",
       "max_tokens": 150,

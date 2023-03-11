@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { computed, onMounted, onBeforeMount, ref, toRaw, watch, type Ref } from 'vue'
 import localforage from 'localforage'
 import dayjs from 'dayjs'
-import { debounce, isObject, merge } from 'lodash-es'
-import type { ExampleItem, HistoryItem, Item, WorkspaceItem } from '@/types'
+import { cloneDeep, debounce, isObject, merge } from 'lodash-es'
+import type { ExampleItem, GlobalConfig, HistoryItem, Item, WorkspaceItem } from '@/types'
 import { L_GLOBAL_CONFIG } from '@/constants'
 import { shallowMerge } from '@/utils'
 const APP_NAME = 'coogle'
@@ -21,7 +21,7 @@ function createStorage(partialConfig: LocalForageOptions) {
 }
 
 export interface CreateStoreOptions<I extends Item<any>> {
-  where?: (item: I, index: number) => boolean
+  // where?: (item: I, index: number) => boolean
   init?: (storage: LocalForage, items: Ref<I[]>) => any
 }
 
@@ -34,7 +34,7 @@ function createStore<I extends Item<any>>(key: string, options?: CreateStoreOpti
       (key: string, value: any) => {
         return storage.setItem(key, value)
       },
-      500,
+      400,
       { trailing: true },
     )
 
@@ -45,16 +45,16 @@ function createStore<I extends Item<any>>(key: string, options?: CreateStoreOpti
       )
     })
     const create = async (item: Partial<I> & { data: I['data'] }) => {
-      const now = Date()
+      const now = dayjs()
       const _item = {
-        id: +now,
-        createdTime: now,
-        updatedTime: now,
+        id: now.unix(),
+        createdTime: now.toString(),
+        updatedTime: now.toString(),
         ...item,
       } as I as any
       items.value = [...items.value, _item]
-      await storage.setItem(String(_item.id), _item)
-      return _item
+      await storage.setItem(String(_item.id), cloneDeep(_item))
+      return _item as I
     }
 
     const remove = async (item: Partial<I> & { id: I['id'] }) => {
@@ -72,7 +72,7 @@ function createStore<I extends Item<any>>(key: string, options?: CreateStoreOpti
       return new Promise((resolve) => {
         items.value = items.value.map((i) => {
           if (i.id == item.id) {
-            const _item = toRaw(merge(i, item, { updatedTime: String(new Date()) }))
+            const _item = merge(cloneDeep(i), { updatedTime: dayjs().toString() })
             promise = promise.then(() => {
               return Promise.resolve(trailingSetItem(String(_item.id), _item)).finally(() =>
                 resolve(_item),
@@ -86,13 +86,9 @@ function createStore<I extends Item<any>>(key: string, options?: CreateStoreOpti
       })
     }
 
-    const find = () => {
-      if (!options || !options.where) {
-        return []
-      }
-
+    const find = (config: { where: (item: I, index: number) => boolean }) => {
       return items.value.filter((item, index) => {
-        return options.where!(item as I, index)
+        return config.where(item as I, index)
       })
     }
 
@@ -184,10 +180,12 @@ export const useWorkspaceStore = createStore<WorkspaceItem>('workspace', {
     }
   },
 })
+
 export const useExampleStore = createStore<ExampleItem>('example')
 
 export const useGlobalConfigStore = defineStore('config', () => {
-  const initialConfig = {
+  const initialConfig: GlobalConfig = {
+    exampleType: 'simple',
     isDrawerOpen: true,
     isConfigOpen: true,
   }

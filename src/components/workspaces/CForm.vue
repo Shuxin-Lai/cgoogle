@@ -21,7 +21,7 @@
     >
       <input
         :value="config['n']"
-        @input="handleUpdate('n', $event)"
+        @input="handleUpdate('n', $event, 'number')"
         min="0"
         max="10"
         type="number"
@@ -35,7 +35,7 @@
     >
       <input
         :value="config['max_tokens']"
-        @input="handleUpdate('max_tokens', $event)"
+        @input="handleUpdate('max_tokens', $event, 'number')"
         min="0"
         max="2048"
         placeholder="0 ~ 2048(4096)"
@@ -50,7 +50,7 @@
     >
       <input
         :value="config['temperature']"
-        @input="handleUpdate('temperature', $event)"
+        @input="handleUpdate('temperature', $event, 'number')"
         min="0"
         max="1"
         type="number"
@@ -64,7 +64,7 @@
     >
       <input
         :value="config['presence_penalty']"
-        @input="handleUpdate('presence_penalty', $event)"
+        @input="handleUpdate('presence_penalty', $event, 'number')"
         min="-2"
         max="2"
         placeholder="-2 ~ 2"
@@ -79,7 +79,7 @@
     >
       <input
         :value="config['top_p']"
-        @input="handleUpdate('top_p', $event)"
+        @input="handleUpdate('top_p', $event, 'number')"
         min="0"
         max="1"
         placeholder="0 ~ 1"
@@ -174,13 +174,14 @@ const options = [
 ]
 
 const emit = defineEmits(['update:config'])
-const handleUpdate = (path: keyof HistoryData['config'], valueOrEvent: any) => {
+const handleUpdate = (path: keyof HistoryData['config'], valueOrEvent: any, type?: 'number') => {
   let newConfig
   if (valueOrEvent instanceof Event) {
+    // @ts-ignore
+    const value = valueOrEvent.target.value
     newConfig = {
       ...props.config,
-      // @ts-ignore
-      [path]: valueOrEvent.target.value,
+      [path]: type == 'number' ? Number(value) : value,
     }
   } else {
     newConfig = {
