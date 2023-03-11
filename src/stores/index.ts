@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
-import { computed, onMounted, ref, type Ref } from 'vue'
+import { computed, onMounted, ref, toRaw, watch, type Ref } from 'vue'
 import localforage from 'localforage'
 import dayjs from 'dayjs'
-import { isObject, merge } from 'lodash-es'
+import { debounce, isObject, merge } from 'lodash-es'
 import type { ExampleItem, HistoryItem, Item, WorkspaceItem } from '@/types'
+import { L_GLOBAL_CONFIG } from '@/constants'
+import { shallowMerge } from '@/utils'
 const APP_NAME = 'coogle'
 
 const common = {
@@ -28,6 +30,13 @@ function createStore<I extends Item<any>>(key: string, options?: CreateStoreOpti
     const storage = createStorage({
       name: key,
     })
+    const trailingSetItem = debounce(
+      (key: string, value: any) => {
+        return storage.setItem(key, value)
+      },
+      500,
+      { trailing: true },
+    )
 
     const items = ref<Array<I>>([])
     const sortedItems = computed(() => {
@@ -58,12 +67,18 @@ function createStore<I extends Item<any>>(key: string, options?: CreateStoreOpti
       await storage.clear()
     }
 
+    let promise = Promise.resolve() as Promise<any>
     const update = async (item: Partial<I> & { id: I['id'] }) => {
       return new Promise((resolve) => {
         items.value = items.value.map((i) => {
           if (i.id == item.id) {
-            const _item = merge(i, item, { updatedTime: String(new Date()) })
-            storage.setItem(String(_item.id), _item).finally(() => resolve(_item))
+            const _item = toRaw(merge(i, item, { updatedTime: String(new Date()) }))
+            promise = promise.then(() => {
+              return Promise.resolve(trailingSetItem(String(_item.id), _item)).finally(() =>
+                resolve(_item),
+              )
+            })
+
             return _item
           }
           return i
@@ -123,8 +138,36 @@ const defaultWorkspace: WorkspaceItem = {
   updatedTime: String(new Date()),
   data: {
     name: 'Default',
+    meta: {
+      tabs: [
+        {
+          name: 'writer',
+          isActive: true,
+        },
+        {
+          name: 'chat',
+          isActive: false,
+        },
+        {
+          name: 'code',
+          isActive: false,
+        },
+      ],
+    },
     // todo
-    config: {} as any,
+    config: {
+      writer: {
+        prompt: '',
+        model: '',
+      },
+      chat: {
+        model: '',
+        messages: [],
+      },
+      code: {
+        model: '',
+      },
+    },
   },
 }
 export const useHistoryStore = createStore<HistoryItem>('history')
@@ -142,13 +185,50 @@ export const useWorkspaceStore = createStore<WorkspaceItem>('workspace', {
   },
 })
 export const useExampleStore = createStore<ExampleItem>('example')
-export const useConfigStore = defineStore('config', () => {
-  const config = ref({
+
+export const useGlobalConfigStore = defineStore('config', () => {
+  const init = () => {
+    const _cacheConfigStr = window.localStorage.getItem(L_GLOBAL_CONFIG)
+    if (!_cacheConfigStr) {
+      return
+    }
+
+    config.value = shallowMerge({}, initialConfig, JSON.parse(_cacheConfigStr))
+  }
+  const initialConfig = {
     isDrawerOpen: true,
     isConfigOpen: true,
-  })
+  }
+  const config = ref(initialConfig)
+  init()
+
+  const isDrawerOpen = computed(() => config.value.isDrawerOpen)
+  const isConfigOpen = computed(() => config.value.isConfigOpen)
+  const toggleDrawer = () => {
+    config.value.isDrawerOpen = !config.value.isDrawerOpen
+  }
+
+  const toggleConfig = () => {
+    config.value.isConfigOpen = !config.value.isConfigOpen
+  }
+
+  watch(
+    config,
+    debounce(
+      (newConfig) => {
+        window.localStorage.setItem(L_GLOBAL_CONFIG, JSON.stringify(newConfig))
+      },
+      200,
+      { trailing: true },
+    ),
+    { deep: true },
+  )
 
   return {
     config,
+    isConfigOpen,
+    isDrawerOpen,
+    toggleConfig,
+    toggleDrawer,
   }
 })

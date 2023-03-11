@@ -6,3 +6,5 @@ export function copyToClipboard(text: string) {
   document.execCommand('copy')
   document.body.removeChild(dummy)
 }
+
+export const shallowMerge = Object.assign

@@ -13,7 +13,16 @@ export interface Item<T> {
   data: T
 }
 
+export interface WorkspaceDataMeta {
+  tabs: {
+    title?: string
+    name: string
+    isActive: boolean
+  }[]
+}
+
 export interface WorkspaceData {
+  meta: WorkspaceDataMeta
   config: Config
   name: string
 }

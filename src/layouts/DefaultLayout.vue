@@ -1,7 +1,7 @@
 <template>
   <div class="default_layout h-screen w-screen">
     <drawer />
-    <div class="main_container" :style="containerStyle">
+    <div class="main_container transform transition-all duration-500" :style="containerStyle">
       <slot />
     </div>
     <config />
@@ -12,10 +12,10 @@
 import Drawer from './default_layout/Drawer.vue'
 import Config from './default_layout/Config.vue'
 import { storeToRefs } from 'pinia'
-import { useConfigStore } from '@/stores'
+import { useGlobalConfigStore } from '@/stores'
 import { computed } from 'vue'
 
-const { config } = storeToRefs(useConfigStore())
+const { config } = storeToRefs(useGlobalConfigStore())
 const containerStyle = computed(() => {
   let paddingLeft = ''
   let paddingRight = ''

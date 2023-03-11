@@ -3,3 +3,20 @@ body {
   margin: 0;
   padding: 0;
 }
+
+$placeholder-color: #9999;
+input::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: $placeholder-color;
+  opacity: 1; /* Firefox */
+}
+
+input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: $placeholder-color;
+}
+
+input::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: $placeholder-color;
+}
