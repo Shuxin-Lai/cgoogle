@@ -1,12 +1,19 @@
 <template>
-  <teleport to="body">
+  <teleport to="#sider">
     <transition name="slideRight">
       <div
         v-show="isConfigOpen"
         class="config-container fixed top-0 right-0 z-50 h-screen overflow-auto overflow-x-hidden border-l px-2"
       >
-        <div class="prose">
-          <h3>Config</h3>
+        <div class="flex justify-center">
+          <div class="prose flex-1">
+            <h3>Config</h3>
+          </div>
+
+          <div class="actions flex gap-2 cursor-pointer">
+            <div class="underline" @click="emits('save')">Save</div>
+            <div class="underline" @click="emits('reset')">Reset</div>
+          </div>
         </div>
         <div class="mt-4"></div>
         <c-form :config="config" :type="type" @update:config="(v) => emits('change', v)" />
@@ -24,7 +31,7 @@ defineProps<{ config: HistoryData['config']; type: ConfigType }>()
 
 const { isConfigOpen } = storeToRefs(useGlobalConfigStore())
 
-const emits = defineEmits(['change'])
+const emits = defineEmits(['change', 'save', 'reset'])
 </script>
 
 <style scoped lang="scss">

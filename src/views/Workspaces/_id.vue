@@ -13,6 +13,8 @@
       :config="currentTabConfig"
       :type="activeTabName"
       @change="handleChange"
+      @save="handleSaveConfig"
+      @reset="handleResetConfig"
     />
 
     <div class="header flex h-8 items-center justify-between px-4">
@@ -61,12 +63,20 @@ import { TransitionRoot } from '@headlessui/vue'
 import { useWorkspace } from '@/hooks'
 import MenuIcon from '@/components/MenuIcon.vue'
 import { useGlobalConfigStore } from '@/stores'
+import { useToast } from 'vue-toastification'
 
 const configStore = useGlobalConfigStore()
+const { success } = useToast()
 const { toggleConfig, toggleDrawer } = configStore
-const { tabs, activeTabName, workspace, currentTabConfig } = useWorkspace()
+const { tabs, activeTabName, workspace, currentTabConfig, resetCurrentTagConfig } = useWorkspace()
+
 const handleChange = (config: any) => {
   currentTabConfig.value = config
+}
+const handleSaveConfig = () => {}
+const handleResetConfig = () => {
+  resetCurrentTagConfig()
+  success('success')
 }
 </script>
 

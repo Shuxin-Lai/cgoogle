@@ -124,7 +124,7 @@
           @click="handleRemoveStop(s)"
         >
           <font-awesome-icon icon="fa-solid fa-xmark" />
-          <span>{{ s }}</span>
+          <span>{{ s == '\n' ? '\\n' : s }}</span>
         </div>
       </div>
     </c-form-item>
@@ -140,7 +140,10 @@ const props = defineProps<{
   config: HistoryData['config']
   type: ConfigType
 }>()
-const stops = computed(() => (props.config.stop || []) as string[])
+
+const stops = computed(() => {
+  return (props.config.stop || []) as string[]
+})
 
 const options = [
   {
@@ -175,6 +178,8 @@ const options = [
 
 const emit = defineEmits(['update:config'])
 const handleUpdate = (path: keyof HistoryData['config'], valueOrEvent: any, type?: 'number') => {
+  console.log('update..')
+
   let newConfig
   if (valueOrEvent instanceof Event) {
     // @ts-ignore
@@ -202,10 +207,7 @@ const handleAddStop = () => {
 }
 const handleRemoveStop = (s: string) => {
   const _stops = stops.value.filter((_s) => _s != s)
-  handleUpdate('stop', {
-    ...props.config,
-    stop: _stops,
-  })
+  handleUpdate('stop', _stops)
 }
 </script>
 

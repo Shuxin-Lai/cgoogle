@@ -1,4 +1,9 @@
-import type { CreateCompletionRequest, CreateChatCompletionRequest } from 'openai'
+import type {
+  CreateCompletionRequest,
+  CreateChatCompletionRequest,
+  CreateCompletionResponse,
+  CreateChatCompletionResponse,
+} from 'openai'
 
 export type Promisable<T> = T | Promise<T>
 export type Recordable<T = any> = Record<string, T>
@@ -53,7 +58,7 @@ export interface HistoryData {
   workspaceId: number
   type: ConfigType
   config: Config[ConfigType]
-  response?: CreateChatCompletionRequest | CreateCompletionRequest
+  response?: { text: string }[]
   stat: Stat
   error?: string
   // clientId: number

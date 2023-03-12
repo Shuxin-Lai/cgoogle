@@ -1,5 +1,5 @@
 <template>
-  <teleport to="body">
+  <teleport to="#sider">
     <transition name="slideLeft">
       <div
         v-show="isDrawerOpen"

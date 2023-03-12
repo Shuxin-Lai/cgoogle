@@ -4,7 +4,7 @@ import localforage from 'localforage'
 import dayjs from 'dayjs'
 import { cloneDeep, debounce, isObject, merge } from 'lodash-es'
 import type { ExampleItem, GlobalConfig, HistoryItem, Item, WorkspaceItem } from '@/types'
-import { L_GLOBAL_CONFIG } from '@/constants'
+import { getDefaultConfig, L_GLOBAL_CONFIG } from '@/constants'
 import { shallowMerge } from '@/utils'
 const APP_NAME = 'coogle'
 
@@ -151,19 +151,7 @@ const defaultWorkspace: WorkspaceItem = {
       ],
     },
     // todo
-    config: {
-      writer: {
-        prompt: '',
-        model: '',
-      },
-      chat: {
-        model: '',
-        messages: [],
-      },
-      code: {
-        model: '',
-      },
-    },
+    config: getDefaultConfig() as any,
   },
 }
 export const useHistoryStore = createStore<HistoryItem>('history')

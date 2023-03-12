@@ -5,11 +5,12 @@ import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { builtinExampleList } from '@/data'
 import { storeToRefs } from 'pinia'
+import { getDefaultConfig } from '@/constants'
+import { dayjs } from '@/utils'
 
 export const useWorkspace = () => {
   const exampleStore = useExampleStore()
   const historyStore = useHistoryStore()
-  const { items: historyItems } = storeToRefs(historyStore)
   const route = useRoute()
   const workspaceId = computed(() => {
     return Number(route.params.id)
@@ -61,9 +62,11 @@ export const useWorkspace = () => {
       return []
     }
 
-    return historyStore.find({
-      where: (item) => item.data.workspaceId == workspaceId.value,
-    })
+    return historyStore
+      .find({
+        where: (item) => item.data.workspaceId == workspaceId.value,
+      })
+      .sort((a, b) => (dayjs(a.updatedTime).isBefore(dayjs(b.updatedTime)) ? 1 : -1))
   })
 
   const config = computed({
@@ -92,6 +95,10 @@ export const useWorkspace = () => {
     },
   })
 
+  const resetCurrentTagConfig = () => {
+    currentTabConfig.value = getDefaultConfig(activeTabName.value) as any
+  }
+
   watch(activeTabName, (n) => {
     if (!workspace.value) {
       return
@@ -114,5 +121,7 @@ export const useWorkspace = () => {
     activeExample,
     exampleList,
     historyList,
+
+    resetCurrentTagConfig,
   }
 }

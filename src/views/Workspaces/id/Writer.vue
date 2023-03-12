@@ -8,7 +8,7 @@
         </div>
       </div>
       <textarea
-        :value="config.prompt as string"
+        :value="config.prompt"
         :placeholder="placeholder"
         autofocus
         class="textarea-bordered textarea w-full pb-8"
@@ -38,8 +38,18 @@
         @click="handleClickExample"
       />
     </transition>
-    
-    
+
+    <div v-if="historyList.length">
+      <div class="flex justify-between">
+        <div class="prose">
+          <h3>History</h3>
+        </div>
+
+        <button class="text-btn btn-ghost btn" @click="handleClearHistory">Clear</button>
+      </div>
+    </div>
+
+    <history :history-list="historyList" @remove="handleRemoveHistory" @rewrite="handleRewrite" />
   </div>
 </template>
 
@@ -47,13 +57,14 @@
 import { useWorkspace } from '@/hooks'
 import { cloneDeep, isString, merge, set } from 'lodash-es'
 import type { CreateCompletionRequest } from 'openai'
-import type { ExampleItem } from '@/types'
+import type { ExampleItem, HistoryItem } from '@/types'
 import { computed, nextTick, ref, type WritableComputedRef } from 'vue'
 import Examples from '@/components/workspaces/Examples.vue'
 import { builtinExampleList as builtinExampleList } from '@/data'
-import { sleep } from '@/utils'
+import { logger, sleep } from '@/utils'
 import { createCompletion } from '@/apis'
 import { useHistoryStore } from '@/stores'
+import History from '@/components/workspaces/History.vue'
 
 const {
   currentTabConfig,
@@ -63,12 +74,13 @@ const {
   activeExampleId,
   activeExample,
   activeTabName,
-  exampleList,
 } = useWorkspace()
 const config = currentTabConfig as WritableComputedRef<CreateCompletionRequest>
 const textareaRef = ref<HTMLTextAreaElement>()
 const historyStore = useHistoryStore()
-const { create, update } = historyStore
+const { create, update, remove, removeAll } = historyStore
+
+const isLoading = ref(false)
 
 const handleInput = (valueOrEvent: any) => {
   if (isString(valueOrEvent)) {
@@ -134,7 +146,6 @@ const handleClickExample = (e: ExampleItem) => {
   focus()
 }
 
-const isLoading = ref(false)
 const handleSubmit = async () => {
   if (isLoading.value) {
     return
@@ -156,7 +167,6 @@ const handleSubmit = async () => {
       type: activeTabName.value,
     },
   })
-  console.log('history: ', history)
 
   const result = await createCompletion(config.value)
   const { stat, data, message } = result
@@ -165,8 +175,25 @@ const handleSubmit = async () => {
     'data',
     merge(history.data, { response: data, stat, error: stat == 'error' ? message : null }),
   )
-  console.log('update: ', history)
+  logger.log('history: ', history)
   await update(history)
+}
+
+const handleClearHistory = async () => {
+  const isOk = window.confirm('Are you sure to clear history')
+  if (!isOk) {
+    return
+  }
+  await removeAll()
+}
+
+const handleRemoveHistory = (item: HistoryItem) => {
+  remove(item)
+}
+const handleRewrite = (item: HistoryItem) => {
+  // @ts-ignore
+  handleInput(item.data.config.prompt)
+  focus()
 }
 </script>
 

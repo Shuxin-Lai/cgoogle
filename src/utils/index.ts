@@ -1,4 +1,5 @@
 export * from './day-utils'
+export * from './logger'
 
 export function copyToClipboard(text: string) {
   const dummy = document.createElement('textarea')
