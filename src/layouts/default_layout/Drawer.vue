@@ -1,4 +1,12 @@
 <template>
+  <workspace-editor
+    :visible="visible"
+    :item="editingWorkspace"
+    @cancel="visible = false"
+    @confirm="handleConfirm"
+    @delete="handleDelete"
+  />
+
   <teleport to="#sider">
     <transition name="slideLeft">
       <div
@@ -23,7 +31,7 @@
                   </div>
                 </div>
               </li>
-              <li v-for="item in menu" :key="item.id" class="menu-item mb-2 px-4">
+              <li v-for="(item, index) in menu" :key="item.id" class="menu-item mb-2 px-4">
                 <router-link
                   :to="item.to"
                   class="flex gap-4"
@@ -32,7 +40,7 @@
                   <span class="flex-1">
                     {{ item.data.name }}
                   </span>
-                  <div class="menu-item__actions flex gap-4">
+                  <div v-if="index != 0" class="menu-item__actions flex gap-4">
                     <font-awesome-icon
                       icon="fa-solid fa-pen-to-square"
                       @click.prevent="handleEdit(item)"
@@ -51,21 +59,26 @@
 </template>
 
 <script setup lang="ts">
-import { useGlobalConfigStore, useWorkspaceStore } from '@/stores'
+import { useGlobalConfigStore, useWorkspaceStore, useExampleStore, useHistoryStore } from '@/stores'
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { getInitialWorkspace } from '@/constants'
 import { dayjs } from '@/utils'
 import { useRoute, useRouter } from 'vue-router'
-import { TabGroup } from '@headlessui/vue'
-import type { WorkspaceItem } from '@/types'
+import type { WorkspaceData, WorkspaceItem } from '@/types'
+import WorkspaceEditor from '@/views/Workspaces/id/WorkspaceEditor.vue'
+import { set } from 'lodash-es'
 
 const workspaceStore = useWorkspaceStore()
+const exampleStore = useExampleStore()
+const historyStore = useHistoryStore()
 const { isDrawerOpen } = storeToRefs(useGlobalConfigStore())
 const { items } = storeToRefs(workspaceStore)
-const { create } = workspaceStore
+const { create, remove, update } = workspaceStore
 const router = useRouter()
 const route = useRoute()
+const editingWorkspace = ref<WorkspaceItem | null>(null)
+const visible = ref(false)
 
 const menu = computed(() => {
   const activeId = route.params.id as string
@@ -97,7 +110,30 @@ const handleAddWorkspace = async () => {
 }
 
 const handleEdit = (item: WorkspaceItem) => {
-  alert(item.data.name)
+  editingWorkspace.value = item
+  visible.value = true
+}
+const handleConfirm = async (workspaceData: WorkspaceData) => {
+  const ws = set(editingWorkspace.value!, 'data', workspaceData)
+  await update(ws)
+  visible.value = false
+}
+const handleDelete = async () => {
+  visible.value = false
+  const _id = route.params.id as string
+  if (route.path.startsWith('/workspaces') && _id == String(editingWorkspace.value!.id)) {
+    router.replace(menu.value[0].to)
+  }
+  await Promise.all([
+    historyStore.removeMore({
+      where: (item) => item.data.workspaceId == editingWorkspace.value!.id,
+    }),
+    exampleStore.removeMore({
+      where: (item) =>
+        item.data.workspaceId != null && item.data.workspaceId == editingWorkspace.value!.id,
+    }),
+    remove(editingWorkspace.value!),
+  ])
 }
 </script>
 

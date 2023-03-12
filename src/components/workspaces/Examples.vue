@@ -41,6 +41,7 @@
       v-for="example in list"
       :key="example.id"
       class="w-48 cursor-pointer rounded border border-gray-200 bg-base-100 p-2"
+      :class="{ 'border-primary': activeId == example.id }"
       @click="emit('click', example)"
     >
       <div class="card-body p-0">
@@ -64,7 +65,10 @@
 </template>
 
 <script setup lang="ts">
+import { useGlobalConfigStore } from '@/stores'
 import type { ExampleItem } from '@/types'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 
 defineProps<{
   list: ExampleItem[]
@@ -72,7 +76,8 @@ defineProps<{
 }>()
 
 const emit = defineEmits(['click', 'remove'])
-const isList = false
+const { config } = storeToRefs(useGlobalConfigStore())
+const isList = computed(() => config.value.exampleType == 'simple')
 </script>
 
 <style scoped></style>

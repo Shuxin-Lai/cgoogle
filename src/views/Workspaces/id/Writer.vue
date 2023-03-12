@@ -15,7 +15,7 @@
       </div>
 
       <textarea
-        :value="config.prompt"
+        :value="config?.prompt"
         :placeholder="placeholder"
         autofocus
         class="textarea-bordered textarea w-full pb-8"

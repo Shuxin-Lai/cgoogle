@@ -7,16 +7,16 @@ export async function createCompletion(data: CreateCompletionRequest) {
   if (!data.stop || (Array.isArray(data.stop) && data.stop.length == 0)) {
     payload.stop = undefined
   }
-  return {
-    stat: 'success',
-    type: 'writer',
-    message: 'success',
-    data: [
-      {
-        text: 'World();',
-      },
-    ],
-  }
+  // return {
+  //   stat: 'success',
+  //   type: 'writer',
+  //   message: 'success',
+  //   data: [
+  //     {
+  //       text: 'World();',
+  //     },
+  //   ],
+  // }
   return vtHttp
     .post<CreateCompletionResponse>('/openai/create', payload, {
       autoThrowWhenError: false,

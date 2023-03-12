@@ -89,11 +89,11 @@ function createStore<I extends Item<any>>(key: string, options?: CreateStoreOpti
     }
 
     let promise = Promise.resolve() as Promise<any>
-    const update = async (item: Partial<I> & { id: I['id'] }) => {
+    const update = async (item: I) => {
       return new Promise((resolve) => {
         items.value = items.value.map((i) => {
           if (i.id == item.id) {
-            const _item = merge(cloneDeep(i), { updatedTime: dayjs().toString() })
+            const _item = merge(cloneDeep(item), { updatedTime: dayjs().toString() }) as any
             promise = promise.then(() => {
               return Promise.resolve(trailingSetItem(String(_item.id), _item)).finally(() =>
                 resolve(_item),

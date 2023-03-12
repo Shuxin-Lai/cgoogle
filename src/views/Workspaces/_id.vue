@@ -2,7 +2,7 @@
   <config-saver
     :visible="isShow"
     :type="activeTabName"
-    :initial-value="{ defaultInput: currentTabConfig.prompt }"
+    :initial-value="{ defaultInput: currentTabConfig?.prompt }"
     @cancel="isShow = false"
     @confirm="handleSave"
   />
@@ -34,7 +34,15 @@
           <menu-icon @click="toggleDrawer" />
         </div>
       </div>
-      <div class="right">
+      <div class="right flex cursor-pointer items-center gap-4">
+        <div
+          class="tooltip tooltip-left tooltip-primary"
+          data-tip="Example"
+          @click="globalConfig.exampleType = globalConfig.exampleType == 'full' ? 'simple' : 'full'"
+        >
+          <font-awesome-icon v-if="globalConfig.exampleType == 'simple'" icon="fa-solid fa-list" />
+          <font-awesome-icon v-else icon="fa-solid fa-table-cells" />
+        </div>
         <div class="tooltip tooltip-left tooltip-primary" data-tip="Config">
           <menu-icon @click="toggleConfig" />
         </div>
@@ -70,21 +78,22 @@
 </template>
 
 <script setup lang="ts">
-import Config from '@/components/workspaces/Config.vue'
-import { TransitionRoot } from '@headlessui/vue'
-import { useWorkspace } from '@/hooks'
 import MenuIcon from '@/components/MenuIcon.vue'
-import { useExampleStore, useGlobalConfigStore, useWorkspaceStore } from '@/stores'
-import { useToast } from 'vue-toastification'
-import { ref } from 'vue'
-import ConfigSaver from './id/ConfigSaver.vue'
+import Config from '@/components/workspaces/Config.vue'
+import { useWorkspace } from '@/hooks'
+import { useExampleStore, useGlobalConfigStore } from '@/stores'
 import type { ExampleData } from '@/types'
-import { cloneDeep, set } from 'lodash-es'
-import { logger } from '@/utils'
+import { TransitionRoot } from '@headlessui/vue'
+import { set } from 'lodash-es'
+import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+import { useToast } from 'vue-toastification'
+import ConfigSaver from './id/ConfigSaver.vue'
 
 const isShow = ref(false)
 const configStore = useGlobalConfigStore()
 const exampleStore = useExampleStore()
+const { config: globalConfig } = storeToRefs(configStore)
 
 const { success } = useToast()
 const { toggleConfig, toggleDrawer } = configStore

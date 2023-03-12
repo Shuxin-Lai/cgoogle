@@ -8,6 +8,13 @@
       >
         <div class="h-screen w-full max-w-7xl py-8">
           <div ref="target" class="h-full overflow-auto rounded-md bg-white p-8 shadow">
+            <div class="flex justify-end">
+              <font-awesome-icon
+                class="cursor-pointer"
+                icon="fa-solid fa-xmark"
+                @click="handleCancel"
+              />
+            </div>
             <example-view @click-item="(item) => $emit('click-item', item)" />
           </div>
         </div>
