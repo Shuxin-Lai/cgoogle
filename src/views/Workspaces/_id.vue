@@ -50,6 +50,7 @@
         :key="tab.name"
         class="tab-bordered tab"
         :class="{ 'tab-active': tab.name == activeTabName }"
+        @click="handleChangeTab(tab)"
       >
         <span class="capitalize">
           {{ tab.title || tab.name }}
@@ -73,11 +74,13 @@ import Config from '@/components/workspaces/Config.vue'
 import { TransitionRoot } from '@headlessui/vue'
 import { useWorkspace } from '@/hooks'
 import MenuIcon from '@/components/MenuIcon.vue'
-import { useExampleStore, useGlobalConfigStore } from '@/stores'
+import { useExampleStore, useGlobalConfigStore, useWorkspaceStore } from '@/stores'
 import { useToast } from 'vue-toastification'
 import { ref } from 'vue'
 import ConfigSaver from './id/ConfigSaver.vue'
 import type { ExampleData } from '@/types'
+import { cloneDeep, set } from 'lodash-es'
+import { logger } from '@/utils'
 
 const isShow = ref(false)
 const configStore = useGlobalConfigStore()
@@ -110,6 +113,14 @@ const handleSave = async (form: ExampleData) => {
     data: form,
   })
   success('Saved')
+}
+
+const handleChangeTab = (tab: any) => {
+  if (tab.name == activeTabName.value) {
+    return
+  }
+
+  workspace.value = set(workspace.value!, 'data.activeTabName', tab.name)
 }
 </script>
 

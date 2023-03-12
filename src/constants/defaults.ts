@@ -30,3 +30,27 @@ export const getDefaultConfig = (
 
   return cloneDeep(D_CONFIG)
 }
+
+export const getInitialWorkspace = (name: string) => {
+  return {
+    name,
+    meta: {
+      tabs: [
+        {
+          name: 'writer',
+          isActive: true,
+        },
+        {
+          name: 'chat',
+          isActive: false,
+        },
+        {
+          name: 'code',
+          isActive: false,
+        },
+      ],
+    },
+    // todo
+    config: getDefaultConfig() as any,
+  }
+}

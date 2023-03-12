@@ -37,6 +37,7 @@ export interface WorkspaceData {
   config: Config
   name: string
   activeExampleId?: number
+  activeTabName?: string
 }
 export type WorkspaceItem = Item<WorkspaceData>
 
