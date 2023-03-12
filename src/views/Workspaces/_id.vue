@@ -1,4 +1,21 @@
 <template>
+  <config-saver
+    :visible="isShow"
+    :type="activeTabName"
+    :initial-value="{ defaultInput: currentTabConfig.prompt }"
+    @cancel="isShow = false"
+    @confirm="handleSave"
+  />
+
+  <config
+    v-if="currentTabConfig"
+    :config="currentTabConfig"
+    :type="activeTabName"
+    @change="handleChange"
+    @save="handleSaveConfig"
+    @reset="handleResetConfig"
+  />
+
   <TransitionRoot
     :show="workspace != null"
     enter="transition-opacity duration-75"
@@ -7,17 +24,11 @@
     leave="transition-opacity duration-150"
     leave-from="opacity-100"
     leave-to="opacity-0"
+    class="relative"
   >
-    <config
-      v-if="currentTabConfig"
-      :config="currentTabConfig"
-      :type="activeTabName"
-      @change="handleChange"
-      @save="handleSaveConfig"
-      @reset="handleResetConfig"
-    />
-
-    <div class="header flex h-8 items-center justify-between px-4">
+    <div
+      class="header sticky inset-x-0 top-0 z-10 flex h-12 items-center justify-between bg-white px-4"
+    >
       <div class="left">
         <div class="tooltip tooltip-right tooltip-primary" data-tip="Menu">
           <menu-icon @click="toggleDrawer" />
@@ -62,21 +73,43 @@ import Config from '@/components/workspaces/Config.vue'
 import { TransitionRoot } from '@headlessui/vue'
 import { useWorkspace } from '@/hooks'
 import MenuIcon from '@/components/MenuIcon.vue'
-import { useGlobalConfigStore } from '@/stores'
+import { useExampleStore, useGlobalConfigStore } from '@/stores'
 import { useToast } from 'vue-toastification'
+import { ref } from 'vue'
+import ConfigSaver from './id/ConfigSaver.vue'
+import type { ExampleData } from '@/types'
 
+const isShow = ref(false)
 const configStore = useGlobalConfigStore()
+const exampleStore = useExampleStore()
+
 const { success } = useToast()
 const { toggleConfig, toggleDrawer } = configStore
-const { tabs, activeTabName, workspace, currentTabConfig, resetCurrentTagConfig } = useWorkspace()
+const { tabs, activeTabName, workspace, currentTabConfig, workspaceId, resetCurrentTagConfig } =
+  useWorkspace()
 
 const handleChange = (config: any) => {
   currentTabConfig.value = config
 }
-const handleSaveConfig = () => {}
+const handleSaveConfig = () => {
+  isShow.value = true
+}
 const handleResetConfig = () => {
   resetCurrentTagConfig()
   success('success')
+}
+
+const handleSave = async (form: ExampleData) => {
+  isShow.value = false
+  form = {
+    ...form,
+    workspaceId: form.isGlobal ? null : workspaceId.value!,
+    config: { ...currentTabConfig.value } as any,
+  }
+  await exampleStore.create({
+    data: form,
+  })
+  success('Saved')
 }
 </script>
 

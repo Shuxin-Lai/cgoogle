@@ -4,7 +4,6 @@ import { cloneDeep, merge, set as lSet } from 'lodash-es'
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { builtinExampleList } from '@/data'
-import { storeToRefs } from 'pinia'
 import { getDefaultConfig } from '@/constants'
 import { dayjs } from '@/utils'
 
@@ -38,7 +37,7 @@ export const useWorkspace = () => {
   // example
   const activeExampleId = computed(() => workspace.value?.data.activeExampleId)
   const exampleList = computed(() => {
-    if (!workspaceId.value) {
+    if (workspaceId.value == null) {
       return []
     }
     return exampleStore.find({
@@ -46,6 +45,11 @@ export const useWorkspace = () => {
     })
   })
 
+  const globalExampleList = computed(() => {
+    return exampleStore.find({
+      where: (item) => !!item.data.isGlobal,
+    })
+  })
   const activeExample = computed(() => {
     if (!activeExampleId.value) {
       return null
@@ -120,6 +124,7 @@ export const useWorkspace = () => {
     activeExampleId,
     activeExample,
     exampleList,
+    globalExampleList,
     historyList,
 
     resetCurrentTagConfig,

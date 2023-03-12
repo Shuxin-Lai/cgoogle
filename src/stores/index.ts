@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, onMounted, onBeforeMount, ref, toRaw, watch, type Ref } from 'vue'
+import { computed, onMounted, onBeforeMount, ref, toRaw, watch, type Ref, unref } from 'vue'
 import localforage from 'localforage'
 import dayjs from 'dayjs'
 import { cloneDeep, debounce, isObject, merge } from 'lodash-es'
@@ -62,6 +62,27 @@ function createStore<I extends Item<any>>(key: string, options?: CreateStoreOpti
       await storage.removeItem(String(item.id))
     }
 
+    const removeMore = async (config: { where: (item: I, index: number) => boolean }) => {
+      const result: I[] = []
+      const removedItems: I[] = []
+      items.value.forEach((item, index) => {
+        const _item = item as I
+        const shouldRemove = config.where(_item, index)
+        if (shouldRemove) {
+          removedItems.push(_item)
+        } else {
+          result.push(_item)
+        }
+      })
+
+      items.value = result as any
+      const promises = removedItems
+        .map((item) => String(item.id))
+        .map((id) => storage.removeItem(id))
+
+      await Promise.all(promises)
+    }
+
     const removeAll = async () => {
       items.value = []
       await storage.clear()
@@ -120,6 +141,7 @@ function createStore<I extends Item<any>>(key: string, options?: CreateStoreOpti
       remove,
       update,
       removeAll,
+      removeMore,
       find,
       findOne,
     }

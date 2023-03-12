@@ -3,14 +3,14 @@
     <transition name="slideRight">
       <div
         v-show="isConfigOpen"
-        class="config-container fixed top-0 right-0 z-50 h-screen overflow-auto overflow-x-hidden border-l px-2"
+        class="config-container fixed top-0 right-0 z-50 h-screen overflow-auto overflow-x-hidden border-l px-2 pt-4"
       >
         <div class="flex justify-center">
           <div class="prose flex-1">
             <h3>Config</h3>
           </div>
 
-          <div class="actions flex gap-2 cursor-pointer">
+          <div class="actions flex cursor-pointer gap-2">
             <div class="underline" @click="emits('save')">Save</div>
             <div class="underline" @click="emits('reset')">Reset</div>
           </div>

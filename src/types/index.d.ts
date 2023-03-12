@@ -41,12 +41,13 @@ export interface WorkspaceData {
 export type WorkspaceItem = Item<WorkspaceData>
 
 export interface ExampleData {
-  workspaceId?: number
+  workspaceId?: Nullable<number>
   type: ConfigType
   config: Config[ConfigType]
   placeholder?: string
   defaultInput?: string
   isBuiltin?: boolean
+  isGlobal?: boolean
   title: string
   description?: string
   tags: string[]

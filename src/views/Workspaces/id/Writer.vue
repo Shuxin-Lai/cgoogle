@@ -1,4 +1,10 @@
 <template>
+  <example-shower
+    :visible="isShowExamples"
+    @click-item="handleClickExample"
+    @cancel="isShowExamples = false"
+  />
+
   <div class="prompt">
     <div class="relative">
       <div class="absolute right-4 bottom-4">
@@ -7,6 +13,7 @@
           <font-awesome-icon icon="fa-solid fa-xmark" @click="handleClear" />
         </div>
       </div>
+
       <textarea
         :value="config.prompt"
         :placeholder="placeholder"
@@ -18,25 +25,26 @@
       />
     </div>
     <div class="mt-2"></div>
-    <div class="flex justify-end">
+    <div class="flex justify-end gap-4">
       <button
         class="btn-outline btn-ghost btn-sm btn"
         :class="{ loading: isLoading }"
-        @click="handleSubmit"
+        @click="handleShowExamples"
       >
-        submit
+        Examples
+      </button>
+
+      <button class="btn-primary btn-sm btn" :class="{ loading: isLoading }" @click="handleSubmit">
+        Submit
       </button>
     </div>
   </div>
 
   <div class="mt-4 pb-8">
     <transition name="fade">
-      <examples
-        v-if="!historyList.length"
-        :active-id="activeExampleId"
-        :list="builtinExampleList"
-        @click="handleClickExample"
-      />
+      <div v-if="!historyList.length">
+        <example-view @click-item="handleClickExample" />
+      </div>
     </transition>
 
     <div v-if="historyList.length">
@@ -59,12 +67,12 @@ import { cloneDeep, isString, merge, set } from 'lodash-es'
 import type { CreateCompletionRequest } from 'openai'
 import type { ExampleItem, HistoryItem } from '@/types'
 import { computed, nextTick, ref, type WritableComputedRef } from 'vue'
-import Examples from '@/components/workspaces/Examples.vue'
-import { builtinExampleList as builtinExampleList } from '@/data'
+import ExampleView from '@/components/workspaces/ExampleView.vue'
 import { logger, sleep } from '@/utils'
 import { createCompletion } from '@/apis'
 import { useHistoryStore } from '@/stores'
 import History from '@/components/workspaces/History.vue'
+import ExampleShower from './ExampleShower.vue'
 
 const {
   currentTabConfig,
@@ -78,9 +86,10 @@ const {
 const config = currentTabConfig as WritableComputedRef<CreateCompletionRequest>
 const textareaRef = ref<HTMLTextAreaElement>()
 const historyStore = useHistoryStore()
-const { create, update, remove, removeAll } = historyStore
+const { create, update, remove, removeMore } = historyStore
 
 const isLoading = ref(false)
+const isShowExamples = ref(false)
 
 const handleInput = (valueOrEvent: any) => {
   if (isString(valueOrEvent)) {
@@ -134,6 +143,7 @@ const handleClickExample = (e: ExampleItem) => {
   if (e.id == activeExampleId.value) {
     return
   }
+  isShowExamples.value = false
 
   workspace.value = set(workspace.value!, 'data.activeExampleId', e.id)
   const config = cloneDeep(e.data.config)
@@ -184,7 +194,9 @@ const handleClearHistory = async () => {
   if (!isOk) {
     return
   }
-  await removeAll()
+  await removeMore({
+    where: (item) => item.data.workspaceId == workspaceId.value,
+  })
 }
 
 const handleRemoveHistory = (item: HistoryItem) => {
@@ -194,6 +206,10 @@ const handleRewrite = (item: HistoryItem) => {
   // @ts-ignore
   handleInput(item.data.config.prompt)
   focus()
+}
+
+const handleShowExamples = () => {
+  isShowExamples.value = true
 }
 </script>
 
