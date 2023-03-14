@@ -52,14 +52,23 @@
           </div>
         </div>
 
-        <div class="user flex h-16 items-center pl-6">User</div>
+        <!-- <div class="user flex h-16 items-center pl-6">User</div> -->
+        <div class="flex h-16 cursor-pointer items-center pl-6" @click="handleClear">
+          Clear All Data
+        </div>
       </div>
     </transition>
   </teleport>
 </template>
 
 <script setup lang="ts">
-import { useGlobalConfigStore, useWorkspaceStore, useExampleStore, useHistoryStore } from '@/stores'
+import {
+  useGlobalConfigStore,
+  useWorkspaceStore,
+  useExampleStore,
+  useHistoryStore,
+  getStorages,
+} from '@/stores'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { getInitialWorkspace } from '@/constants'
@@ -134,6 +143,18 @@ const handleDelete = async () => {
     }),
     remove(editingWorkspace.value!),
   ])
+}
+
+const handleClear = async () => {
+  if (!window.confirm('Are you sure to remove all data?')) {
+    return
+  }
+  const storages = getStorages()
+  const storageList = Object.keys(storages).map((key) => storages[key])
+  const promises = storageList.map((s) => s.clear())
+  await Promise.all(promises)
+  window.localStorage.clear()
+  window.location.href = '/'
 }
 </script>
 

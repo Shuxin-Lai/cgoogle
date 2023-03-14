@@ -54,7 +54,7 @@
         </div>
         <div
           class="tooltip tooltip-left tooltip-primary"
-          data-tip="Example"
+          data-tip="Change example display mode"
           @click="globalConfig.exampleType = globalConfig.exampleType == 'full' ? 'simple' : 'full'"
         >
           <font-awesome-icon

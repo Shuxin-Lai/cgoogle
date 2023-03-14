@@ -3,7 +3,14 @@ import { computed, onMounted, onBeforeMount, ref, toRaw, watch, type Ref, unref 
 import localforage from 'localforage'
 import dayjs from 'dayjs'
 import { cloneDeep, debounce, isObject, merge } from 'lodash-es'
-import type { ExampleItem, GlobalConfig, HistoryItem, Item, WorkspaceItem } from '@/types'
+import type {
+  ExampleItem,
+  GlobalConfig,
+  HistoryItem,
+  Item,
+  Recordable,
+  WorkspaceItem,
+} from '@/types'
 import { getDefaultConfig, getInitialWorkspace, L_GLOBAL_CONFIG } from '@/constants'
 import { shallowMerge } from '@/utils'
 const APP_NAME = 'coogle'
@@ -16,8 +23,12 @@ const common = {
   description: '',
 }
 
-function createStorage(partialConfig: LocalForageOptions) {
-  return localforage.createInstance(merge(common, partialConfig))
+const storages: Recordable<ReturnType<typeof createStorage>> = {}
+export const getStorages = () => storages
+function createStorage(partialConfig: LocalForageOptions & { name: string }) {
+  const res = localforage.createInstance(merge(common, partialConfig))
+  storages[partialConfig.name] = res
+  return res
 }
 
 export interface CreateStoreOptions<I extends Item<any>> {
