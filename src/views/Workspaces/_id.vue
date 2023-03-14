@@ -7,6 +7,14 @@
     @confirm="handleSave"
   />
 
+  <editor
+    :visible="isWorkspaceEditorOpen"
+    :initial-value="editorText"
+    :initial-mode="editorMode"
+    @change="(v) => (editorText = v)"
+    @change-mode="(v) => (editorMode = v)"
+  />
+
   <config
     v-if="currentTabConfig"
     :config="currentTabConfig"
@@ -37,10 +45,22 @@
       <div class="right flex cursor-pointer items-center gap-4">
         <div
           class="tooltip tooltip-left tooltip-primary"
+          data-tip="Editor"
+          @click="toggleWorkspaceEditor"
+        >
+          <font-awesome-icon
+            :icon="isWorkspaceEditorOpen ? 'fa-icon fa-eye-dropper-empty' : 'fa-icon fa-book'"
+          />
+        </div>
+        <div
+          class="tooltip tooltip-left tooltip-primary"
           data-tip="Example"
           @click="globalConfig.exampleType = globalConfig.exampleType == 'full' ? 'simple' : 'full'"
         >
-          <font-awesome-icon v-if="globalConfig.exampleType == 'simple'" icon="fa-solid fa-list" />
+          <font-awesome-icon
+            v-if="globalConfig.exampleType == 'simple'"
+            icon="fa-regular fa-list-alt"
+          />
           <font-awesome-icon v-else icon="fa-solid fa-table-cells" />
         </div>
         <div class="tooltip tooltip-left tooltip-primary" data-tip="Config">
@@ -89,6 +109,7 @@ import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import ConfigSaver from './id/ConfigSaver.vue'
+import Editor from '@/components/workspaces/Editor.vue'
 
 const isShow = ref(false)
 const configStore = useGlobalConfigStore()
@@ -97,8 +118,18 @@ const { config: globalConfig } = storeToRefs(configStore)
 
 const { success } = useToast()
 const { toggleConfig, toggleDrawer } = configStore
-const { tabs, activeTabName, workspace, currentTabConfig, workspaceId, resetCurrentTagConfig } =
-  useWorkspace()
+const {
+  tabs,
+  activeTabName,
+  workspace,
+  currentTabConfig,
+  workspaceId,
+  isWorkspaceEditorOpen,
+  editorText,
+  editorMode,
+  resetCurrentTagConfig,
+  toggleWorkspaceEditor,
+} = useWorkspace()
 
 const handleChange = (config: any) => {
   currentTabConfig.value = config

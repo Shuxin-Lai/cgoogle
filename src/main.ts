@@ -7,7 +7,9 @@ import router from './router'
 // style
 import '@/assets/styles/tailwind.css'
 import '@/assets/styles/index.scss'
+import '@/assets/styles/external_bymd.scss'
 import 'vue-toastification/dist/index.css'
+
 import { provideAppToast } from './toast'
 
 /* import the fontawesome core */
@@ -15,7 +17,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons'
+import { faCircleQuestion, faListAlt, faNoteSticky } from '@fortawesome/free-regular-svg-icons'
 
 /* import specific icons */
 import {
@@ -25,10 +27,23 @@ import {
   faPenToSquare,
   faList,
   faTableCells,
+  faBook,
+  faEyeDropperEmpty,
 } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
-library.add(faCircleQuestion, faBars, faXmark, faFill, faPenToSquare, faList, faTableCells)
+library.add(
+  faListAlt,
+  faCircleQuestion,
+  faBars,
+  faXmark,
+  faFill,
+  faPenToSquare,
+  faList,
+  faTableCells,
+  faBook,
+  faEyeDropperEmpty,
+)
 
 const app = createApp(App)
 

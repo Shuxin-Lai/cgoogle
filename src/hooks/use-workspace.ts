@@ -1,6 +1,6 @@
 import { useExampleStore, useHistoryStore, useWorkspaceStore } from '@/stores'
 import type { ConfigType } from '@/types'
-import { cloneDeep, merge, set as lSet } from 'lodash-es'
+import { cloneDeep, debounce, merge, set as lSet } from 'lodash-es'
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { builtinExampleList } from '@/data'
@@ -24,6 +24,45 @@ export const useWorkspace = () => {
       update(w as any)
     },
   })
+  const workspaceData = computed({
+    get() {
+      return workspace.value?.data
+    },
+    set(data) {
+      workspace.value = lSet(workspace.value!, 'data', data)
+    },
+  })
+
+  const isWorkspaceEditorOpen = computed(() => {
+    return workspaceData.value?.isEditorOpen
+  })
+
+  const editorText = computed({
+    get() {
+      return workspaceData.value?.editorText || ''
+    },
+    set: debounce(
+      (text) => {
+        workspaceData.value = lSet(workspaceData.value!, 'editorText', text)
+      },
+      200,
+      { trailing: true },
+    ),
+  })
+
+  const editorMode = computed({
+    get() {
+      return workspaceData.value?.editorMode || ''
+    },
+    set: (mode) => {
+      workspaceData.value = lSet(workspaceData.value!, 'editorMode', mode)
+    },
+  })
+
+  const toggleWorkspaceEditor = () => {
+    const state = !isWorkspaceEditorOpen.value
+    workspaceData.value = lSet(workspaceData.value!, 'isEditorOpen', state)
+  }
 
   const tabs = computed(() => {
     return workspace.value?.data.meta.tabs || []
@@ -111,7 +150,7 @@ export const useWorkspace = () => {
     data.meta.tabs = data.meta.tabs.map((i) =>
       i.name == n ? { ...i, isActive: true } : { ...i, isActive: false },
     )
-    update({ id: workspaceId.value, data })
+    update({ ...workspace.value!, id: workspaceId.value, data })
   })
 
   return {
@@ -127,6 +166,11 @@ export const useWorkspace = () => {
     globalExampleList,
     historyList,
 
+    isWorkspaceEditorOpen,
+    workspaceData,
+    editorText,
+    editorMode,
     resetCurrentTagConfig,
+    toggleWorkspaceEditor,
   }
 }

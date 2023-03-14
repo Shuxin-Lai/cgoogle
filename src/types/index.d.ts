@@ -36,6 +36,9 @@ export interface WorkspaceData {
   meta: WorkspaceDataMeta
   config: Config
   name: string
+  isEditorOpen?: boolean
+  editorText?: string
+  editorMode?: string
   activeExampleId?: number
   activeTabName?: string
 }
