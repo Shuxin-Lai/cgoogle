@@ -5,6 +5,7 @@
       tooltip="ID of the model to use. You can use the List models API to see all of your available models, or see our Model overview for descriptions of them."
     >
       <select
+        :disabled="type == 'chat'"
         :value="config['model']"
         class="select-bordered select w-full"
         @change="handleUpdate('model', $event)"
@@ -14,12 +15,23 @@
         </option>
       </select>
     </c-form-item>
+    <c-form-item v-if="type == 'chat'" label="Max History">
+      <input
+        :value="config['max_history']"
+        @input="handleUpdate('max_history', $event, 'number')"
+        min="0"
+        max="10"
+        type="number"
+        class="input-bordered input w-full"
+      />
+    </c-form-item>
 
     <c-form-item
       label="N"
       tooltip="How many completions to generate for each prompt. Note: Because this parameter generates many completions, it can quickly consume your token quota. Use carefully and ensure that you have reasonable settings for max_tokens and stop."
     >
       <input
+        :disabled="type == 'chat'"
         :value="config['n']"
         @input="handleUpdate('n', $event, 'number')"
         min="0"

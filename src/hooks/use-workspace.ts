@@ -107,7 +107,8 @@ export const useWorkspace = () => {
 
     return historyStore
       .find({
-        where: (item) => item.data.workspaceId == workspaceId.value,
+        where: (item) =>
+          item.data.workspaceId == workspaceId.value && item.data.type == activeTabName.value,
       })
       .sort((a, b) => (dayjs(a.updatedTime).isBefore(dayjs(b.updatedTime)) ? 1 : -1))
   })

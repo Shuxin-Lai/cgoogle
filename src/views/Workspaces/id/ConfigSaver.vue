@@ -6,7 +6,7 @@
         class="fixed inset-0 z-50 flex items-center justify-center"
         style="background: rgba(0, 0, 0, 0.6)"
       >
-        <div ref="target" class="w-full max-w-xl rounded-md bg-white p-8 shadow">
+        <div ref="target" class="w-full max-w-xl rounded-md bg-base-100 p-8 shadow">
           <div class="flex justify-end">
             <font-awesome-icon
               class="cursor-pointer"

@@ -1,7 +1,7 @@
 <template>
   <div class="relative border bg-base-100 px-4 py-2">
     <div class="absolute right-4 top-2 flex gap-4">
-      <div class="flex cursor-pointer justify-center gap-4 bg-white pl-2 pb-2">
+      <div class="flex cursor-pointer justify-center gap-4 bg-inherit pl-2 pb-2">
         <font-awesome-icon icon="fa-solid fa-pen-to-square" @click="handleRewrite" />
         <font-awesome-icon icon="fa-solid fa-xmark" @click="handleRemove" />
       </div>

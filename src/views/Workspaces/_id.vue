@@ -34,9 +34,7 @@
     leave-to="opacity-0"
     class="relative"
   >
-    <div
-      class="header sticky inset-x-0 top-0 z-10 flex h-12 items-center justify-between bg-white px-4"
-    >
+    <div class="header sticky inset-x-0 top-0 z-10 flex h-12 items-center justify-between px-4">
       <div class="left">
         <div class="tooltip tooltip-right tooltip-primary" data-tip="Menu">
           <menu-icon @click="toggleDrawer" />

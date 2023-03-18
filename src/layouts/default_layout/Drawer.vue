@@ -14,13 +14,64 @@
         class="drawer-container fixed top-0 left-0 z-50 h-screen overflow-auto bg-base-200"
       >
         <div class="wrapper">
-          <router-link class="cursor-pointer" to="/">
-            <div class="logo flex h-16 items-center pl-6">
-              <div class="font-title inline-flex text-3xl font-semibold text-primary">
-                <span class="capitalize"> Coogle </span>
+          <div>
+            <div class="flex h-16 items-center justify-between pl-6">
+              <router-link to="/">
+                <div class="font-title inline-flex text-3xl font-semibold text-primary">
+                  <span class="capitalize"> Coogle </span>
+                </div>
+              </router-link>
+              <div class="themes">
+                <div class="dropdown-end dropdown">
+                  <div tabindex="0" class="btn-ghost btn-sm btn gap-1 normal-case">
+                    <svg
+                      width="20"
+                      height="20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      class="inline-block h-5 w-5 stroke-current md:h-6 md:w-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                      ></path>
+                    </svg>
+                    <span class="hidden md:inline">Themes</span>
+                    <svg
+                      width="10px"
+                      height="10px"
+                      class="ml-1 hidden h-3 w-3 fill-current opacity-60 sm:inline-block"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 2048 2048"
+                    >
+                      <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
+                    </svg>
+                  </div>
+                  <ul
+                    tabindex="0"
+                    class="dropdown-content rounded-t-box rounded-b-box top-px mx-2 mt-16 h-[70vh] max-h-96 w-32 overflow-y-auto bg-base-200 py-4 text-base-content shadow-2xl"
+                  >
+                    <li
+                      v-for="theme in themes"
+                      :key="theme"
+                      class="px-2"
+                      @click="handleChangeTheme(theme)"
+                    >
+                      <button
+                        class="btn-sm btn my-1 w-full"
+                        :class="theme == config.theme ? 'btn-primary' : 'btn-ghost'"
+                      >
+                        {{ theme }}
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </router-link>
+          </div>
           <div class="workspaces" style="height: calc(100vh - 8rem)">
             <ul class="menu menu-compact flex flex-col p-0">
               <li class="menu-title pb-2">
@@ -81,7 +132,41 @@ import { set } from 'lodash-es'
 const workspaceStore = useWorkspaceStore()
 const exampleStore = useExampleStore()
 const historyStore = useHistoryStore()
-const { isDrawerOpen } = storeToRefs(useGlobalConfigStore())
+const globalConfigStore = useGlobalConfigStore()
+const { setTheme } = globalConfigStore
+const { isDrawerOpen, config } = storeToRefs(globalConfigStore)
+const themes = [
+  'light',
+  'dark',
+  'cupcake',
+  'bumblebee',
+  'emerald',
+  'corporate',
+  'synthwave',
+  'retro',
+  'cyberpunk',
+  'valentine',
+  'halloween',
+  'garden',
+  'forest',
+  'aqua',
+  'lofi',
+  'pastel',
+  'fantasy',
+  'wireframe',
+  'black',
+  'luxury',
+  'dracula',
+  'cmyk',
+  'autumn',
+  'business',
+  'acid',
+  'lemonade',
+  'night',
+  'coffee',
+  'winter',
+]
+
 const { items } = storeToRefs(workspaceStore)
 const { create, remove, update } = workspaceStore
 const router = useRouter()
@@ -155,6 +240,10 @@ const handleClear = async () => {
   await Promise.all(promises)
   window.localStorage.clear()
   window.location.href = '/'
+}
+
+const handleChangeTheme = (theme: string) => {
+  setTheme(theme)
 }
 </script>
 

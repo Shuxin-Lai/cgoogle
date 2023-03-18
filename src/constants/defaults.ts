@@ -1,14 +1,20 @@
 import type { ConfigType, WorkspaceData } from '@/types'
 import { cloneDeep } from 'lodash-es'
+import type { CreateChatCompletionRequest, CreateCompletionRequest } from 'openai'
 
-const D_WRITER_CONFIG = {
+const D_WRITER_CONFIG: CreateCompletionRequest = {
   prompt: '',
   model: 'text-davinci-003',
+  n: 1,
 }
 
-const D_CHAT_CONFIG = {
-  model: '',
+const D_CHAT_CONFIG: CreateChatCompletionRequest & { max_history: number } = {
+  model: 'gpt-3.5-turbo',
   messages: [],
+  n: 1,
+  top_p: 0.7,
+  max_history: 1,
+  max_tokens: 600,
 }
 
 const D_CODE_CONFIG = {

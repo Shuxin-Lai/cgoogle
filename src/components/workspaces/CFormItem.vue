@@ -2,7 +2,7 @@
   <label class="block"
     ><div class="mb-2 flex items-center gap-2">
       <slot name="label">
-        <span class="capitalize text-gray-700">
+        <span class="capitalize">
           {{ label }}
         </span>
       </slot>

@@ -195,7 +195,8 @@ const handleClearHistory = async () => {
     return
   }
   await removeMore({
-    where: (item) => item.data.workspaceId == workspaceId.value,
+    where: (item) =>
+      item.data.workspaceId == workspaceId.value && item.data.type == activeTabName.value,
   })
 }
 

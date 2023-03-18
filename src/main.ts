@@ -17,7 +17,13 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faCircleQuestion, faListAlt, faNoteSticky } from '@fortawesome/free-regular-svg-icons'
+import {
+  faCircleQuestion,
+  faListAlt,
+  faNoteSticky,
+  faPaperPlane,
+  faUser,
+} from '@fortawesome/free-regular-svg-icons'
 
 /* import specific icons */
 import {
@@ -43,6 +49,8 @@ library.add(
   faTableCells,
   faBook,
   faEyeDropperEmpty,
+  faPaperPlane,
+  faUser,
 )
 
 const app = createApp(App)

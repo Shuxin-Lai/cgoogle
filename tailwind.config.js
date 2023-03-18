@@ -28,7 +28,6 @@ module.exports = {
     logs: true,
     rtl: false,
     prefix: "",
-    darkTheme: "corporate",
   },
   presets: [],
   darkMode: 'media', // or 'class'

@@ -26,7 +26,8 @@ const emit = defineEmits(['change', 'change-mode'])
 .config-container {
   width: var(--vt-editor-width);
   height: 100vh;
-  background: white;
+  background: hsla(var(--b1) / var(--tw-bg-opacity, 1));
+  // background: white;
   z-index: 51;
 }
 </style>

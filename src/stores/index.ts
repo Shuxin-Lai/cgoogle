@@ -189,6 +189,7 @@ export const useGlobalConfigStore = defineStore('config', () => {
     exampleType: 'simple',
     isDrawerOpen: true,
     isConfigOpen: true,
+    theme: '',
   }
   const config = ref(initialConfig)
 
@@ -202,6 +203,11 @@ export const useGlobalConfigStore = defineStore('config', () => {
     config.value.isConfigOpen = !config.value.isConfigOpen
   }
 
+  const setTheme = (theme: string) => {
+    config.value.theme = theme
+    document.documentElement.dataset['theme'] = theme
+  }
+
   onBeforeMount(() => {
     const _cacheConfigStr = window.localStorage.getItem(L_GLOBAL_CONFIG)
     if (!_cacheConfigStr) {
@@ -209,6 +215,12 @@ export const useGlobalConfigStore = defineStore('config', () => {
     }
 
     config.value = shallowMerge({}, initialConfig, JSON.parse(_cacheConfigStr))
+  })
+
+  onMounted(() => {
+    if (config.value.theme) {
+      setTheme(config.value.theme)
+    }
   })
 
   watch(
@@ -229,5 +241,6 @@ export const useGlobalConfigStore = defineStore('config', () => {
     isDrawerOpen,
     toggleConfig,
     toggleDrawer,
+    setTheme,
   }
 })

@@ -15,6 +15,7 @@ export interface GlobalConfig {
   exampleType: 'simple' | 'full'
   isDrawerOpen: boolean
   isConfigOpen: boolean
+  theme?: string
 }
 
 export interface Item<T> {
